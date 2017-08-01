@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BlendIn</string>
+    <string name="facebook_app_id">248555865650912</string>
+    <string name="fb_login_protocol_scheme">fb248555865650912</string>
 </resources>
