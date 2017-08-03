@@ -3,11 +3,11 @@ package blendin.blendin.classes;
 public class User {
     public String id;
     public String name;
-    public String photoUrl;
+    public String photoURL;
 
-    public User(String id, String name, String photoUrl) {
+    public User(String id, String name, String photoURL) { //TODO: download name and photoURL from fb
         this.id = id;
         this.name = name;
-        this.photoUrl = photoUrl;
+        this.photoURL = photoURL;
     }
 }
