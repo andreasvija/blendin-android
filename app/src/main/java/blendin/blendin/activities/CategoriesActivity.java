@@ -1,11 +1,12 @@
-package blendin.blendin;
+package blendin.blendin.activities;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import blendin.blendin.R;
 
 public class CategoriesActivity extends Activity implements View.OnClickListener{
 
