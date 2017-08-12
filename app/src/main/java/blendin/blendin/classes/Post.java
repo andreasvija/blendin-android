@@ -1,3 +1,7 @@
+/*
+* Data structure for storing and passing the data of a post.
+*/
+
 package blendin.blendin.classes;
 
 import android.location.Location;

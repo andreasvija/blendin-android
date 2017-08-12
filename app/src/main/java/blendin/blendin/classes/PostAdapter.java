@@ -1,5 +1,8 @@
-package blendin.blendin.classes;
+/*
+* Custom Adapter for the RecyclerLayout displaying the posts.
+*/
 
+package blendin.blendin.classes;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -19,7 +22,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         posts = postList;
     }
 
-    //holds all necessary views
+    // Holds all necessary views
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ViewHolder(View view) {
@@ -27,22 +30,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         }
     }
 
-    //Initialize a new post view
+    //Initialize a new post view - called when RecyclerView starts
     @Override
     public PostAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                      int viewType) {
-
+        // Set up one post's template to be updated later
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_post, parent, false);
-        //Only sets up post template, TODO: modify template in enterPostdata()
-        enterPostData();
+
+        updateViewContent();
+
         return new PostAdapter.ViewHolder(view);
     }
 
-    //Fill recycled view with new data
+    // Fill existing view with new data - to save resources,
+    // RecyclerView only keeps a few fragment views
+    // and when the view is scrolled, changes the content of existing views
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        enterPostData();
+        updateViewContent();
     }
 
     @Override
@@ -50,7 +56,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         return posts.size();
     }
 
-    private void enterPostData() {
-
+    // Updates the data in template or recycled view
+    private void updateViewContent() {
+        //TODO: modify existing view here
     }
 }

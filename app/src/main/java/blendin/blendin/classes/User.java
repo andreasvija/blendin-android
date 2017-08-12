@@ -1,3 +1,7 @@
+/*
+* Data structure for storing and passing the data of a post or comment's author.
+*/
+
 package blendin.blendin.classes;
 
 public class User {

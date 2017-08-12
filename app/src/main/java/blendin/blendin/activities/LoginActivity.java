@@ -1,3 +1,7 @@
+/*
+* Activity for authenticating user. Is the launching activity.
+*/
+
 package blendin.blendin.activities;
 
 import android.app.Activity;
@@ -25,8 +29,7 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         AccessToken token = AccessToken.getCurrentAccessToken();
-
-        if (token != null) {
+        if (token != null) { // If user is already logged in, the access token exists
             enterApp();
         }
 
@@ -34,43 +37,38 @@ public class LoginActivity extends Activity {
         loginButton.setReadPermissions("email", "public_profile");
         // If using in a fragment
         //loginButton.setFragment(this);
-        // Other app specific specialization
 
-        // Callback registration
         callbackManager = CallbackManager.Factory.create();
 
+        // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                // App code
-                AccessToken token = loginResult.getAccessToken();
-                Log.d("###debug", "facebook:onSuccess" + loginResult + token);
-
+                //AccessToken token = loginResult.getAccessToken();
+                //Log.d("###debug", "facebook:onSuccess" + loginResult + token);
                 enterApp();
             }
 
             @Override
             public void onCancel() {
-                // App code
-                Log.d("###debug", "facebook:onCancel");
+                //Log.d("###debug", "facebook:onCancel");
             }
 
             @Override
             public void onError(FacebookException exception) {
-                // App code
-                Log.d("###debug", "facebook:onError", exception);
+                //Log.d("###debug", "facebook:onError", exception);
             }
         });
     }
 
+    // Take the result and make the CallbackManager handle it
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
-
     }
 
+    // Start CategoriesActivity and end LoginActivity
     void enterApp () {
         Intent intent = new Intent(getApplicationContext(), CategoriesActivity.class);
         startActivity(intent);
