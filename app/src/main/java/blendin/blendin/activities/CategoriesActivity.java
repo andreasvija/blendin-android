@@ -22,7 +22,8 @@ import blendin.blendin.classes.User;
 public class CategoriesActivity extends Activity implements View.OnClickListener {
 
     int activeCategory; // Number of the currently active category
-    ArrayList<Post> posts;
+    ArrayList<Post> allPosts; // All posts in the system
+    ArrayList<Post> selectedPosts; // Posts of the current selected category
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter postAdapter;
@@ -33,6 +34,9 @@ public class CategoriesActivity extends Activity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
+
+        allPosts = new ArrayList<>();
+        getPosts();
 
         // "All" is the default category
         activeCategory = R.id.category_all;
@@ -47,18 +51,37 @@ public class CategoriesActivity extends Activity implements View.OnClickListener
         findViewById(R.id.category_travel).setOnClickListener(this);
         findViewById(R.id.category_other).setOnClickListener(this);
 
-        posts = new ArrayList<>();
-        generatePostOne();
-        generatePostTwo();
-
         // Set up the RecyclerView of the posts
         recyclerView = (RecyclerView) findViewById(R.id.posts_view);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
         // Make it use a custom Adapter
-        postAdapter = new PostAdapter(posts);
+        postAdapter = new PostAdapter(selectedPosts);
         recyclerView.setAdapter(postAdapter);
+
+    }
+
+    // Get all posts from backend
+    void getPosts() {
+        generatePostOne();
+        generatePostTwo();
+    }
+
+    void generatePostOne() {
+        User user = new User("3", "Person One",
+                "https://scrambledeggsdotorg.files.wordpress.com/2012/04/one.png");
+        Post post = new Post(user, "Finance", "Help with bank transfer",
+                "Something something lorem ipsum");
+        allPosts.add(post);
+    }
+
+    void generatePostTwo() {
+        User user = new User("5", "Persones Dos",
+                "https://cdn.heavencostumes.com.au/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/s/m/smf-29233-tequila-shooter-guy-men_s-mexican-poncho-costume-front-close-r.jpg");
+        Post post = new Post(user, "Food", "Need spices for tacos!!",
+                "Something something lorem ipsum");
+        allPosts.add(post);
     }
 
     // On category click switch to that category
@@ -68,9 +91,12 @@ public class CategoriesActivity extends Activity implements View.OnClickListener
         //String s = getResources().getResourceEntryName(id);
         //Log.d("###", "onClick: " + s);
         switchActiveCategory(id);
+        postAdapter = new PostAdapter(selectedPosts);
+        recyclerView.setAdapter(postAdapter);
+        //postAdapter.notifyDataSetChanged();
     }
 
-
+    // Changes highlighted category and the data used in RecyclerView
     void switchActiveCategory(int newActive) {
         // Set the old active category's background to normal
         LinearLayout ll = (LinearLayout) findViewById(activeCategory);
@@ -80,21 +106,22 @@ public class CategoriesActivity extends Activity implements View.OnClickListener
         activeCategory = newActive;
         ll = (LinearLayout) findViewById(activeCategory);
         ll.setBackground(getResources().getDrawable(R.drawable.back_active));
-    }
 
-    void generatePostOne() {
-        User user = new User("3", "Person One",
-                "https://scrambledeggsdotorg.files.wordpress.com/2012/04/one.png");
-        Post post = new Post(user, "Finance", "Help with bank transfer",
-                "Something something lorem ipsum");
-        posts.add(post);
-    }
+        String category = (String) findViewById(activeCategory).getTag();
+        selectedPosts = new ArrayList<>();
 
-    void generatePostTwo() {
-        User user = new User("5", "Persones Dos",
-                "https://cdn.heavencostumes.com.au/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/s/m/smf-29233-tequila-shooter-guy-men_s-mexican-poncho-costume-front-close-r.jpg");
-        Post post = new Post(user, "Food", "Need spices for tacos!!",
-                "Something something lorem ipsum");
-        posts.add(post);
+        if (category.equals("All")) {
+            for (Post p : allPosts) {
+                selectedPosts.add(p);
+            }
+        }
+
+        else {
+            for (Post p : allPosts) {
+                if (p.category.equals(category)) {
+                    selectedPosts.add(p);
+                }
+            }
+        }
     }
 }

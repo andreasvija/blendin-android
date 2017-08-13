@@ -27,6 +27,7 @@
                 android:padding="2dp"
                 android:layout_marginLeft="6dp"
                 android:id="@+id/category_all"
+                android:tag="All"
                 >
 
                 <ImageView
@@ -53,6 +54,7 @@
                 android:padding="2dp"
                 android:layout_marginLeft="6dp"
                 android:id="@+id/category_finance"
+                android:tag="Finance"
                 >
 
                 <ImageView
@@ -79,6 +81,8 @@
                 android:padding="2dp"
                 android:layout_marginLeft="6dp"
                 android:id="@+id/category_food"
+
+                android:tag="Food"
                 >
 
                 <ImageView
@@ -105,6 +109,7 @@
                 android:padding="2dp"
                 android:layout_marginLeft="6dp"
                 android:id="@+id/category_shopping"
+                android:tag="Shopping"
                 >
 
                 <ImageView
@@ -131,6 +136,7 @@
                 android:padding="2dp"
                 android:layout_marginLeft="6dp"
                 android:id="@+id/category_transport"
+                android:tag="Transport"
                 >
 
                 <ImageView
@@ -157,6 +163,7 @@
                 android:padding="2dp"
                 android:layout_marginLeft="6dp"
                 android:id="@+id/category_travel"
+                android:tag="Travel"
                 >
 
                 <ImageView
@@ -183,6 +190,7 @@
                 android:padding="2dp"
                 android:layout_marginLeft="6dp"
                 android:id="@+id/category_other"
+                android:tag="Other"
                 >
 
                 <ImageView
