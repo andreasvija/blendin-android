@@ -4,9 +4,10 @@
 
 package blendin.blendin.classes;
 
+import java.io.Serializable;
 import java.net.URL;
 
-public class User {
+public class User implements Serializable {
     public String id;
     public String name;
     public String photoURL;
