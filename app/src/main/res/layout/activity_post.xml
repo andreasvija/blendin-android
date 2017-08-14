@@ -107,7 +107,8 @@
         android:id="@+id/comments_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/detailsLayout"/>
+        android:layout_below="@id/detailsLayout"
+        android:layout_marginEnd="8dp" />
 
 
     <RelativeLayout

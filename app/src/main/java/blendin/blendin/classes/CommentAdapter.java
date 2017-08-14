@@ -1,5 +1,5 @@
 /*
-* Custom Adapter for RecyclerLayout displaying posts in CategoryActivity.
+* Custom Adapter for RecyclerLayout displaying comments in PostActivity.
 */
 
 package blendin.blendin.classes;
@@ -23,36 +23,32 @@ import blendin.blendin.R;
 import blendin.blendin.activities.CategoriesActivity;
 import blendin.blendin.activities.PostActivity;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
-    ArrayList<Post> posts;
+    ArrayList<Comment> comments;
 
-    public PostAdapter(ArrayList<Post> postList) {
-        posts = postList;
+    public CommentAdapter(ArrayList<Comment> commentList) {
+        comments = commentList;
     }
 
-    // Holds all necessary views
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public View view;
         public ImageView photoView;
         public TextView nameView;
-        public TextView titleView;
-        //public TextView contentView;
-        public TextView answersView;
+        public TextView contentView;
         public TextView timeAgoView;
 
         public final Context context;
 
+        // Holds all necessary views
         public ViewHolder(View view) {
             super(view);
 
             this.view = view;
             photoView = (ImageView) view.findViewById(R.id.author_photo);
             nameView = (TextView) view.findViewById(R.id.author_name);
-            titleView = (TextView) view.findViewById(R.id.title);
-            //detailsView = (TextView) view.findViewById(R.id.details);
-            answersView = (TextView) view.findViewById(R.id.comment_count);
+            contentView = (TextView) view.findViewById(R.id.content);
             timeAgoView = (TextView) view.findViewById(R.id.timestamp);
             context = view.getContext();
         }
@@ -60,13 +56,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     //Initialize a new post view - called when RecyclerView starts
     @Override
-    public PostAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+    public CommentAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                      int viewType) {
-        // Set up one post's template to be updated later
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_post, parent, false);
 
-        return new PostAdapter.ViewHolder(view);
+        // Set up one comment's template to be updated later
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.fragment_comment, parent, false);
+
+        return new CommentAdapter.ViewHolder(view);
     }
 
     // Fill newly initialized or already existing view with new data
@@ -75,32 +72,31 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        final Post post = posts.get(position);
+        final Comment comment = comments.get(position);
 
         Picasso.with(holder.context)
-                .load(post.author.photoURL)
+                .load(comment.author.photoURL)
                 //.resize(width,height).noFade()
                 .into(holder.photoView);
-        holder.nameView.setText(post.author.name);
-        holder.titleView.setText(post.title);
-        holder.answersView.setText(String.valueOf(post.getCommentCount()) + " " + "answers");
-        CharSequence ago = DateUtils.getRelativeTimeSpanString(post.timestamp,
+        holder.nameView.setText(comment.author.name);
+        holder.contentView.setText(comment.content);
+        CharSequence ago = DateUtils.getRelativeTimeSpanString(comment.timestamp,
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
         holder.timeAgoView.setText(ago);
 
-        holder.view.setOnClickListener(new View.OnClickListener() {
+        /*holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(holder.context, PostActivity.class);
                 intent.putExtra("post", post);
                 holder.context.startActivity(intent);
             }
-        });
+        });*/
     }
 
     @Override
     public int getItemCount() {
-        return posts.size();
+        return comments.size();
     }
 
 }

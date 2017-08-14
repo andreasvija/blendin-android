@@ -1,19 +1,35 @@
+/*
+* Activity for displaying a post and its comments.
+*/
+
 package blendin.blendin.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import blendin.blendin.R;
+import blendin.blendin.classes.Comment;
 import blendin.blendin.classes.Post;
+import blendin.blendin.classes.CommentAdapter;
 
 public class PostActivity extends Activity {
 
-    private Post post;
+    private Post post; // The post being viewed
+    private ArrayList<Comment> comments; // Comments under the post
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter commentAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +40,7 @@ public class PostActivity extends Activity {
         if (extras != null) {
             //post = (Post) getIntent().getSerializableExtra("post");
             post = (Post) extras.get("post");
+            comments = post.comments;
 
             Picasso.with(this).load(post.author.photoURL)
                     //.resize(width,height).noFade()
@@ -35,7 +52,15 @@ public class PostActivity extends Activity {
             CharSequence ago = DateUtils.getRelativeTimeSpanString(post.timestamp,
                     System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
             ((TextView) findViewById(R.id.timestamp)).setText(ago);
-            
+
+            // Set up the RecyclerView of the posts
+            recyclerView = (RecyclerView) findViewById(R.id.comments_view);
+            layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+
+            // Make it use a custom Adapter
+            commentAdapter = new CommentAdapter(comments);
+            recyclerView.setAdapter(commentAdapter);
         }
     }
 

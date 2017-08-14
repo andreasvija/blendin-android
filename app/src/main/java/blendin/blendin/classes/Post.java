@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Post implements Serializable {
+
     public String id; //generated upon creation
     public User author;
     public String category;
@@ -21,9 +22,9 @@ public class Post implements Serializable {
     //public Location location; //generated upon creation
     public double latitude;
     public double longitude;
-    public List<Comment> comments; //generated upon creation, added to
+    public ArrayList<Comment> comments; //generated upon creation, added to
 
-    public Post(User author, String category, String title, String content) {
+    public Post(User author, String category, String title, String content, ArrayList<Comment> comments) {
         this.author = author;
         this.category = category;
         this.title = title;
@@ -38,7 +39,7 @@ public class Post implements Serializable {
         latitude = 56.949d;
         longitude = 24.106d;
 
-        this.comments = new ArrayList<>();
+        this.comments = comments;
     }
 
     public int getCommentCount() {
