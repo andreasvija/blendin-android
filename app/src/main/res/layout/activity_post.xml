@@ -89,7 +89,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/details"
+                android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Where could I boulder? Where could I boulder? boulder boulderWhere could I boulder? Where could I boulder? boulder boulderWhere could I boulder? Where could I boulder? boulder boulderWhere could I boulder? Where could I boulder? boulder boulder"

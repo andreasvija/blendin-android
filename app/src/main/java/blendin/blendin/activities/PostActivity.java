@@ -3,6 +3,8 @@ package blendin.blendin.activities;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.format.DateUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -23,18 +25,17 @@ public class PostActivity extends Activity {
             //post = (Post) getIntent().getSerializableExtra("post");
             post = (Post) extras.get("post");
 
-            /*Picasso.with(this)
-                    .load(post.author.photoURL)
+            Picasso.with(this).load(post.author.photoURL)
                     //.resize(width,height).noFade()
-                    .into(holder.photoView);
-            holder.nameView.setText(post.author.name);
-            holder.titleView.setText(post.title);
-            holder.answersView.setText(String.valueOf(post.getCommentCount()) + " " + "answers");
+                    .into((ImageView) findViewById(R.id.author_photo));
+            ((TextView) findViewById(R.id.author_name)).setText(post.author.name);
+            ((TextView) findViewById(R.id.title)).setText(post.title);
+            ((TextView) findViewById(R.id.content)).setText(post.content);
+            //findViewById(R.id.).answersView.setText(String.valueOf(post.getCommentCount()) + " " + "answers");
             CharSequence ago = DateUtils.getRelativeTimeSpanString(post.timestamp,
                     System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
-            holder.timeAgoView.setText(ago);*/
-
-
+            ((TextView) findViewById(R.id.timestamp)).setText(ago);
+            
         }
     }
 
