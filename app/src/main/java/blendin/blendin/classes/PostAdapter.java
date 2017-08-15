@@ -6,6 +6,8 @@ package blendin.blendin.classes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.text.format.DateUtils;
@@ -17,7 +19,10 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import blendin.blendin.R;
 import blendin.blendin.activities.CategoriesActivity;
@@ -41,6 +46,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         //public TextView contentView;
         public TextView answersView;
         public TextView timeAgoView;
+        public TextView locationView;
 
         public final Context context;
 
@@ -54,6 +60,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             //detailsView = (TextView) view.findViewById(R.id.details);
             answersView = (TextView) view.findViewById(R.id.comment_count);
             timeAgoView = (TextView) view.findViewById(R.id.timestamp);
+            locationView = (TextView) view.findViewById(R.id.location);
             context = view.getContext();
         }
     }
@@ -87,6 +94,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         CharSequence ago = DateUtils.getRelativeTimeSpanString(post.timestamp,
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
         holder.timeAgoView.setText(ago);
+        
+        Geocoder geoCoder = new Geocoder(holder.context, Locale.getDefault());
+        try {
+            List<Address> list = geoCoder.getFromLocation(post.latitude, post.longitude, 1);
+            if (list != null & list.size() > 0) {
+                String location = list.get(0).getLocality();
+                holder.locationView.setText(location);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override

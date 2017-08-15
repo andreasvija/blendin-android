@@ -5,6 +5,8 @@
 package blendin.blendin.activities;
 
 import android.app.Activity;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,8 +16,10 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import blendin.blendin.R;
 import blendin.blendin.classes.Comment;
@@ -52,6 +56,17 @@ public class PostActivity extends Activity {
             CharSequence ago = DateUtils.getRelativeTimeSpanString(post.timestamp,
                     System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
             ((TextView) findViewById(R.id.timestamp)).setText(ago);
+
+            Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
+            try {
+                List<Address> list = geoCoder.getFromLocation(post.latitude, post.longitude, 1);
+                if (list != null & list.size() > 0) {
+                    String location = list.get(0).getLocality();
+                    ((TextView) findViewById(R.id.location)).setText(location);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             // Set up the RecyclerView of the posts
             recyclerView = (RecyclerView) findViewById(R.id.comments_view);
