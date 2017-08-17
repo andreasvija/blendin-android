@@ -44,12 +44,12 @@ public class PostActivity extends Activity {
         if (extras != null) {
             //post = (Post) getIntent().getSerializableExtra("post");
             post = (Post) extras.get("post");
-            comments = post.comments;
+            //comments = post.comments;
 
-            Picasso.with(this).load(post.author.photoURL)
+            /*Picasso.with(this).load(post.author.photoURL)
                     //.resize(width,height).noFade()
                     .into((ImageView) findViewById(R.id.author_photo));
-            ((TextView) findViewById(R.id.author_name)).setText(post.author.name);
+            ((TextView) findViewById(R.id.author_name)).setText(post.author.name);*/
             ((TextView) findViewById(R.id.title)).setText(post.title);
             ((TextView) findViewById(R.id.content)).setText(post.content);
             //findViewById(R.id.).answersView.setText(String.valueOf(post.getCommentCount()) + " " + "answers");

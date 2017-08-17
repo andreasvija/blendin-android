@@ -84,13 +84,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         final Post post = posts.get(position);
 
-        Picasso.with(holder.context)
+        /*Picasso.with(holder.context)
                 .load(post.author.photoURL)
                 //.resize(width,height).noFade()
                 .into(holder.photoView);
-        holder.nameView.setText(post.author.name);
+        holder.nameView.setText(post.author.name);*/
         holder.titleView.setText(post.title);
-        holder.answersView.setText(String.valueOf(post.getCommentCount()) + " " + "answers");
+        //holder.answersView.setText(String.valueOf(post.getCommentCount()) + " " + "answers");
         CharSequence ago = DateUtils.getRelativeTimeSpanString(post.timestamp,
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
         holder.timeAgoView.setText(ago);

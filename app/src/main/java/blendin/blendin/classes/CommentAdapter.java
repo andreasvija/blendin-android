@@ -81,11 +81,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         final Comment comment = comments.get(position);
 
-        Picasso.with(holder.context)
+        /*Picasso.with(holder.context)
                 .load(comment.author.photoURL)
                 //.resize(width,height).noFade()
                 .into(holder.photoView);
-        holder.nameView.setText(comment.author.name);
+        holder.nameView.setText(comment.author.name);*/
         holder.contentView.setText(comment.content);
         CharSequence ago = DateUtils.getRelativeTimeSpanString(comment.timestamp,
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);

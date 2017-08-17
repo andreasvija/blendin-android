@@ -8,14 +8,25 @@ import java.io.Serializable;
 import java.net.URL;
 
 public class User implements Serializable {
-    public String id;
+    //public String id;
     public String name;
     public String photoURL;
 
-    public User(String id, String name, String photoURL) {
+    public User() {
+
+    }
+
+    public User(/*String id,*/ String name, String photoURL) {
         //TODO: download id, name and photoURL from fb
-        this.id = id;
+        //this.id = id;
         this.name = name;
         this.photoURL = photoURL;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public String getPhotoURL() {
+        return photoURL;
     }
 }

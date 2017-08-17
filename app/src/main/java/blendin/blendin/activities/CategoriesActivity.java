@@ -66,11 +66,11 @@ public class CategoriesActivity extends Activity implements View.OnClickListener
 
     // Get all posts from backend
     void getPosts() {
-        generatePostOne();
-        generatePostTwo();
+        //generatePostOne();
+        //generatePostTwo();
     }
 
-    void generatePostOne() {
+    /*void generatePostOne() {
         User user = new User("3", "Person One",
                 "https://scrambledeggsdotorg.files.wordpress.com/2012/04/one.png");
 
@@ -96,7 +96,7 @@ public class CategoriesActivity extends Activity implements View.OnClickListener
         Post post = new Post(user, "Food", "Need spices for tacos!!",
                 "Something something lorem ipsum", comments);
         allPosts.add(post);
-    }
+    }*/
 
     // On category click switch to that category
     @Override
