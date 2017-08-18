@@ -8,10 +8,12 @@ import java.io.Serializable;
 import java.net.URL;
 
 public class User implements Serializable {
+
     //public String id;
     public String name;
     public String photoURL;
 
+    // Empty constructor required for importing Firebase database data into custom class objects
     public User() {
 
     }
@@ -23,6 +25,7 @@ public class User implements Serializable {
         this.photoURL = photoURL;
     }
 
+    // Getter methods required for importing Firebase database data into custom class objects
     public String getName() {
         return name;
     }

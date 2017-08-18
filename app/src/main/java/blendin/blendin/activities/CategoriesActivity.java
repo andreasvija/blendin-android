@@ -12,6 +12,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,30 +25,34 @@ import blendin.blendin.R;
 import blendin.blendin.classes.Comment;
 import blendin.blendin.classes.Post;
 import blendin.blendin.classes.PostAdapter;
+import blendin.blendin.classes.PostChildEventListener;
 import blendin.blendin.classes.User;
 
 public class CategoriesActivity extends Activity implements View.OnClickListener {
 
     int activeCategory; // Number of the currently active category
-    ArrayList<Post> allPosts; // All posts in the system
-    ArrayList<Post> selectedPosts; // Posts of the current selected category
+    //public static ArrayList<Post> allPosts; // All posts in the system
+    public static ArrayList<Post> selectedPosts; // Posts of the current selected category
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter postAdapter;
+    public static RecyclerView.Adapter postAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
+    FirebaseDatabase database;
+    DatabaseReference postsReference;
+    //ChildEventListener childEventListener;
+    ArrayList<DatabaseReference> usedReferences;
+    ArrayList<ChildEventListener> activeListeners;
+
+    public String[] categories = {"All", "Finance", "Food", "Other", "Shopping", "Transport", "Travel"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
 
-        allPosts = new ArrayList<>();
-        getPosts();
-
-        // "All" is the default category
-        activeCategory = R.id.category_all;
-        switchActiveCategory(activeCategory);
+        //allPosts = new ArrayList<>();
+        //getPosts();
 
         // Make category labels clickable
         findViewById(R.id.category_all).setOnClickListener(this);
@@ -59,44 +69,17 @@ public class CategoriesActivity extends Activity implements View.OnClickListener
         recyclerView.setLayoutManager(layoutManager);
 
         // Make it use a custom Adapter
-        postAdapter = new PostAdapter(selectedPosts);
-        recyclerView.setAdapter(postAdapter);
+        //postAdapter = new PostAdapter(selectedPosts);
+        //recyclerView.setAdapter(postAdapter);
 
+        database = FirebaseDatabase.getInstance();
+        postsReference = database.getReference("posts");
+        activeListeners = new ArrayList<>();
+        usedReferences = new ArrayList<>();
+        // "All" is the default category
+        activeCategory = R.id.category_all;
+        switchActiveCategory(activeCategory);
     }
-
-    // Get all posts from backend
-    void getPosts() {
-        //generatePostOne();
-        //generatePostTwo();
-    }
-
-    /*void generatePostOne() {
-        User user = new User("3", "Person One",
-                "https://scrambledeggsdotorg.files.wordpress.com/2012/04/one.png");
-
-        ArrayList<Comment> comments = new ArrayList<>();
-        Comment one = new Comment(user, "one one");
-        Comment two = new Comment(user, "one two");
-        comments.add(one);
-        comments.add(two);
-
-        Post post = new Post(user, "Finance", "Help with bank transfer",
-                "Something something lorem ipsum", comments);
-        allPosts.add(post);
-    }
-
-    void generatePostTwo() {
-        User user = new User("5", "Persones Dos",
-                "https://cdn.heavencostumes.com.au/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/s/m/smf-29233-tequila-shooter-guy-men_s-mexican-poncho-costume-front-close-r.jpg");
-
-        ArrayList<Comment> comments = new ArrayList<>();
-        Comment uno = new Comment(user, "uno uno");
-        comments.add(uno);
-
-        Post post = new Post(user, "Food", "Need spices for tacos!!",
-                "Something something lorem ipsum", comments);
-        allPosts.add(post);
-    }*/
 
     // On category click switch to that category
     @Override
@@ -105,9 +88,6 @@ public class CategoriesActivity extends Activity implements View.OnClickListener
         //String s = getResources().getResourceEntryName(id);
         //Log.d("###", "onClick: " + s);
         switchActiveCategory(id);
-        postAdapter = new PostAdapter(selectedPosts);
-        recyclerView.setAdapter(postAdapter);
-        //postAdapter.notifyDataSetChanged();
     }
 
     // Changes highlighted category and the data used in RecyclerView
@@ -121,21 +101,40 @@ public class CategoriesActivity extends Activity implements View.OnClickListener
         ll = (LinearLayout) findViewById(activeCategory);
         ll.setBackground(getResources().getDrawable(R.drawable.back_active));
 
-        String category = (String) findViewById(activeCategory).getTag();
+        //String category = (String) findViewById(activeCategory).getTag();
         selectedPosts = new ArrayList<>();
 
-        if (category.equals("All")) {
-            for (Post p : allPosts) {
-                selectedPosts.add(p);
-            }
+        String category = (String) findViewById(activeCategory).getTag();
+        setChildEventListener(category);
+
+        postAdapter = new PostAdapter(selectedPosts);
+        recyclerView.setAdapter(postAdapter);
+    }
+
+    public void setChildEventListener(String category) {
+
+        for (int i = 0; i < usedReferences.size(); i++) {
+            usedReferences.get(i).removeEventListener(activeListeners.get(i));
         }
 
-        else {
-            for (Post p : allPosts) {
-                if (p.category.equals(category)) {
-                    selectedPosts.add(p);
-                }
+        activeListeners = new ArrayList<>();
+        usedReferences = new ArrayList<>();
+
+        if (category.equals("All")) {
+            for (String c : categories) {
+                DatabaseReference ref = postsReference.child(c);
+                ChildEventListener lis = new PostChildEventListener();
+                ref.addChildEventListener(lis);
+                usedReferences.add(ref);
+                activeListeners.add(lis);
             }
+        }
+        else {
+            DatabaseReference ref = postsReference.child(category);
+            ChildEventListener lis = new PostChildEventListener();
+            ref.addChildEventListener(lis);
+            usedReferences.add(ref);
+            activeListeners.add(lis);
         }
     }
 }

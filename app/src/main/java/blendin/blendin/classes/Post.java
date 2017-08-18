@@ -22,8 +22,10 @@ public class Post implements Serializable {
     //public Location location; //generated upon creation
     public double latitude;
     public double longitude;
+    public int commentCount;
     //public ArrayList<Comment> comments; //generated upon creation, added to
 
+    // Empty constructor required for importing Firebase database data into custom class objects
     public Post() {
 
     }
@@ -40,8 +42,9 @@ public class Post implements Serializable {
         /*this.location = new Location(""); // TODO: find location when creating post
         this.location.setLatitude(56.949d);
         this.location.setLongitude(24.106d); */
-        latitude = 56.949d;
-        longitude = 24.106d;
+        this.latitude = 56.949d;
+        this.longitude = 24.106d;
+        this.commentCount = 0;
 
         //this.comments = comments;
     }
@@ -50,6 +53,7 @@ public class Post implements Serializable {
         return comments.size();
     }*/
 
+    // Getter methods required for importing Firebase database data into custom class objects
     public String getAuthorID() {
         return authorID;
     }
@@ -70,5 +74,8 @@ public class Post implements Serializable {
     }
     public double getLongitude() {
         return longitude;
+    }
+    public int getCommentCount() {
+        return commentCount;
     }
 }

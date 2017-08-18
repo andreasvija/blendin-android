@@ -16,6 +16,7 @@ public class Comment implements Serializable {
     public double latitude;
     public double longitude;
 
+    // Empty constructor required for importing Firebase database data into custom class objects
     public Comment() {
 
     }
@@ -30,10 +31,11 @@ public class Comment implements Serializable {
         /*this.location = new Location(""); // TODO: find location when creating comment
         this.location.setLatitude(56.949d);
         this.location.setLongitude(24.106d); */
-        latitude = 56.949d;
-        longitude = 24.106d;
+        this.latitude = 56.949d;
+        this.longitude = 24.106d;
     }
 
+    // Getter methods required for importing Firebase database data into custom class objects
     public String getAuthorID() {
         return authorID;
     }

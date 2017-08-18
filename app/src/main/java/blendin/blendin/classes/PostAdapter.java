@@ -17,6 +17,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -31,9 +36,10 @@ import blendin.blendin.activities.PostActivity;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     ArrayList<Post> posts;
+    User author;
 
-    public PostAdapter(ArrayList<Post> postList) {
-        posts = postList;
+    public PostAdapter(ArrayList<Post> posts) {
+        this.posts = posts;
     }
 
     // Holds all necessary views
@@ -84,13 +90,35 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         final Post post = posts.get(position);
 
-        /*Picasso.with(holder.context)
-                .load(post.author.photoURL)
-                //.resize(width,height).noFade()
-                .into(holder.photoView);
-        holder.nameView.setText(post.author.name);*/
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference authorReference = database.getReference("users").child(post.authorID);
+        author = new User();
+
+        ChildEventListener listener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getKey().equals("name")) {
+                    author.name = (String) dataSnapshot.getValue();
+                    holder.nameView.setText(author.name);
+                }
+                else {
+                    author.photoURL = (String) dataSnapshot.getValue();
+                    Picasso.with(holder.context)
+                            .load(author.photoURL)
+                            //.resize(width,height).noFade()
+                            .into(holder.photoView);
+                }
+            }
+            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override public void onCancelled(DatabaseError databaseError) {}
+        };
+        authorReference.addChildEventListener(listener);
+
+
         holder.titleView.setText(post.title);
-        //holder.answersView.setText(String.valueOf(post.getCommentCount()) + " " + "answers");
+        holder.answersView.setText(String.valueOf(post.getCommentCount()) + " " + "answers");
         CharSequence ago = DateUtils.getRelativeTimeSpanString(post.timestamp,
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
         holder.timeAgoView.setText(ago);
