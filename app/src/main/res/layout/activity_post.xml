@@ -108,7 +108,10 @@
                 android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Where could I boulder? Where could I boulder? boulder boulderWhere could I boulder? Where could I boulder? boulder boulderWhere could I boulder? Where could I boulder? boulder boulderWhere could I boulder? Where could I boulder? boulder boulder"
+                android:text="Where could I boulder? Where could I boulder? boulder boulder
+                Where could I boulder? Where could I boulder? boulder boulder
+                Where could I boulder? Where could I boulder? boulder boulder
+                Where could I boulder? Where could I boulder? boulder boulder"
                 android:textColor="#3c3744"
                 android:textSize="14sp"
                 android:layout_marginLeft="10dp"
@@ -138,7 +141,7 @@
         android:layout_marginBottom="5dp">
 
         <EditText
-            android:id="@+id/commentEditText"
+            android:id="@+id/commentText"
             android:layout_alignParentTop="true"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
@@ -147,7 +150,7 @@
             />
 
         <Button
-            android:id="@+id/sendBtn"
+            android:id="@+id/sendCommentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"

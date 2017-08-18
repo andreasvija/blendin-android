@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -32,7 +36,7 @@ import blendin.blendin.classes.Post;
 import blendin.blendin.classes.CommentAdapter;
 import blendin.blendin.classes.User;
 
-public class PostActivity extends Activity {
+public class PostActivity extends Activity implements View.OnClickListener {
 
     private Post post; // The post being viewed
     private ArrayList<Comment> comments; // Comments under the post
@@ -41,6 +45,9 @@ public class PostActivity extends Activity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter commentAdapter;
     private RecyclerView.LayoutManager layoutManager;
+
+    FirebaseDatabase database;
+    DatabaseReference postCommentsReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +60,7 @@ public class PostActivity extends Activity {
             post = (Post) extras.get("post");
             //comments = post.comments;
 
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            database = FirebaseDatabase.getInstance();
             DatabaseReference authorReference = database.getReference("users").child(post.authorID);
             author = new User();
 
@@ -107,7 +114,7 @@ public class PostActivity extends Activity {
             commentAdapter = new CommentAdapter(comments);
             recyclerView.setAdapter(commentAdapter);
 
-            DatabaseReference postCommentsReference = database.getReference("comments").child(post.id);
+            postCommentsReference = database.getReference("comments").child(post.id);
 
             ChildEventListener commentsListener = new ChildEventListener() {
                 @Override
@@ -124,6 +131,48 @@ public class PostActivity extends Activity {
             };
             postCommentsReference.addChildEventListener(commentsListener);
         }
+
+        findViewById(R.id.sendCommentButton).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        EditText box = (EditText) findViewById(R.id.commentText);
+        String content = box.getText().toString();
+        box.setText("");
+        Comment comment = new Comment("123", content);
+        DatabaseReference commentReference = postCommentsReference.push();
+        comment.id = commentReference.getKey();
+        commentReference.setValue(comment);
+
+        final DatabaseReference postReference = database.getReference("posts").child(post.category).child(post.id);
+
+        ChildEventListener listener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.d("###", "onChildAdded");
+
+                if (dataSnapshot.getKey().equals("commentCount")) {
+
+                    Log.d("###", "Key is " + dataSnapshot.getKey());
+                    if (dataSnapshot.getValue() == null) {
+                        Log.d("###", "Value is null");
+                        //commentCountReference.setValue("pls y");
+                    } else {
+                        long currentCount = (long) dataSnapshot.getValue();
+                        postReference.child("commentCount").setValue(currentCount + 1);
+                        Log.d("###", "Value should now be " + String.valueOf(currentCount+1));
+                    }
+                }
+            }
+            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override public void onCancelled(DatabaseError databaseError) {Log.d("###", "onCancelled");}
+        };
+
+        postReference.addChildEventListener(listener);
+        Log.d("###", "added listener");
     }
 
 }

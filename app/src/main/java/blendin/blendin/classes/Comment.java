@@ -25,9 +25,8 @@ public class Comment implements Serializable {
         this.authorID = authorID;
         this.content = content;
 
-        //this.id = "12"; // TODO: generate id in backend
-        this.timestamp = 1501794232000L; // TODO: generate time in backend
-
+        //this.id = "12"; // TODO: generate id in backend and add here later
+        this.timestamp = System.currentTimeMillis();
         /*this.location = new Location(""); // TODO: find location when creating comment
         this.location.setLatitude(56.949d);
         this.location.setLongitude(24.106d); */

@@ -20,7 +20,7 @@ public class User implements Serializable {
 
     public User(/*String id,*/ String name, String photoURL) {
         //TODO: download id, name and photoURL from fb
-        //this.id = id;
+        this.id = "1";
         this.name = name;
         this.photoURL = photoURL;
     }
