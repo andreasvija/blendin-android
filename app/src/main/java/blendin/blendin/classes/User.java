@@ -9,7 +9,7 @@ import java.net.URL;
 
 public class User implements Serializable {
 
-    //public String id;
+    public String id;
     public String name;
     public String photoURL;
 

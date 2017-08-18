@@ -17,6 +17,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -31,9 +36,10 @@ import blendin.blendin.activities.PostActivity;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
     ArrayList<Comment> comments;
+    User author;
 
-    public CommentAdapter(ArrayList<Comment> commentList) {
-        comments = commentList;
+    public CommentAdapter(ArrayList<Comment> comments) {
+        this.comments = comments;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -81,11 +87,33 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         final Comment comment = comments.get(position);
 
-        /*Picasso.with(holder.context)
-                .load(comment.author.photoURL)
-                //.resize(width,height).noFade()
-                .into(holder.photoView);
-        holder.nameView.setText(comment.author.name);*/
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference authorReference = database.getReference("users").child(comment.authorID);
+        author = new User();
+
+        ChildEventListener listener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getKey().equals("name")) {
+                    author.name = (String) dataSnapshot.getValue();
+                    holder.nameView.setText(author.name);
+                }
+                else {
+                    author.photoURL = (String) dataSnapshot.getValue();
+                    Picasso.with(holder.context)
+                            .load(author.photoURL)
+                            //.resize(width,height).noFade()
+                            .into(holder.photoView);
+                }
+            }
+            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override public void onCancelled(DatabaseError databaseError) {}
+        };
+
+        authorReference.addChildEventListener(listener);
+
         holder.contentView.setText(comment.content);
         CharSequence ago = DateUtils.getRelativeTimeSpanString(comment.timestamp,
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
@@ -94,9 +122,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         Geocoder geoCoder = new Geocoder(holder.context, Locale.getDefault());
         try {
             List<Address> list = geoCoder.getFromLocation(comment.latitude, comment.longitude, 1);
-            if (list != null & list.size() > 0) {
-                String location = list.get(0).getLocality();
-                holder.locationView.setText(location);
+            if (list != null) {
+                if (list.size() > 0) {
+                    String location = list.get(0).getLocality();
+                    holder.locationView.setText(location);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

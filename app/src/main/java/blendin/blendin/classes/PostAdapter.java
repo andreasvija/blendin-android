@@ -114,8 +114,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override public void onCancelled(DatabaseError databaseError) {}
         };
-        authorReference.addChildEventListener(listener);
 
+        authorReference.addChildEventListener(listener);
 
         holder.titleView.setText(post.title);
         holder.answersView.setText(String.valueOf(post.getCommentCount()) + " " + "answers");
@@ -126,9 +126,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Geocoder geoCoder = new Geocoder(holder.context, Locale.getDefault());
         try {
             List<Address> list = geoCoder.getFromLocation(post.latitude, post.longitude, 1);
-            if (list != null & list.size() > 0) {
-                String location = list.get(0).getLocality();
-                holder.locationView.setText(location);
+            if (list != null) {
+                if (list.size() > 0) {
+                    String location = list.get(0).getLocality();
+                    holder.locationView.setText(location);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

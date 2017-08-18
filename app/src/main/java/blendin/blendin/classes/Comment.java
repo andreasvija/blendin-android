@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class Comment implements Serializable {
 
-    //public String id; //generated upon creation
+    public String id; //generated upon creation
     public String authorID;
     public String content;
     public long timestamp; //generated upon creation

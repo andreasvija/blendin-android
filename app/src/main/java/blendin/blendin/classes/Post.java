@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Post implements Serializable {
 
-    //public String id; //generated upon creation
+    public String id; //generated upon creation
     public String authorID;
     public String category;
     public String title;
