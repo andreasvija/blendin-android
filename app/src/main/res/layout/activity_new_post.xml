@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginRight="12dp"
+    android:padding="5dp"
+    tools:context="blendin.blendin.activities.NewPostActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:orientation="vertical">
+
+        <!--<Spinner
+            android:id="@+id/post_type"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/options_array"
+            android:entryValues="@array/options_array"
+            android:padding="10dp"
+            android:layout_marginTop="25dp"/>-->
+
+        <Spinner
+            android:id="@+id/post_category"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/categories_array"
+            android:entryValues="@array/categories_array"
+            android:padding="15dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00FFFFFF"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/author_photo"
+                android:src="@drawable/oval"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="top">
+
+                    <TextView
+                        android:id="@+id/author_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Johanna Snow"
+                        android:textColor="#3c3744"
+                        android:textSize="14sp"/>
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="What is your problem?"
+                    android:textColor="#3c3744"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/postContent"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:hint="Describe your problem in details i.e. Who can help me with translation?"
+            android:textColor="#3c3744"
+            android:textSize="14sp"
+            android:gravity="top"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="7dp"
+            android:padding="5dp"
+            android:background="#F7F7F7"/>
+
+        <Button
+            android:id="@+id/sendPostButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorPrimary"
+            android:textColor="#FFFFFF"
+            android:src="@android:drawable/ic_menu_send"/>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

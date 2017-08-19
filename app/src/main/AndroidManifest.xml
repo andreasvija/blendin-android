@@ -40,8 +40,9 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.CategoriesActivity"></activity>
-        <activity android:name=".activities.PostActivity"></activity>
+        <activity android:name=".activities.CategoriesActivity" />
+        <activity android:name=".activities.PostActivity" />
+        <activity android:name=".activities.NewPostActivity"></activity>
     </application>
 
 </manifest>
