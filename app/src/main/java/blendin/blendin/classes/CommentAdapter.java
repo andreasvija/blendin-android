@@ -11,6 +11,7 @@ import android.location.Geocoder;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,11 +95,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         ChildEventListener listener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //Log.d("###","onChildAdded for " + comment.content);
                 if (dataSnapshot.getKey().equals("name")) {
                     author.name = (String) dataSnapshot.getValue();
                     holder.nameView.setText(author.name);
                 }
-                else {
+                else if (dataSnapshot.getKey().equals("photoURL")){
                     author.photoURL = (String) dataSnapshot.getValue();
                     Picasso.with(holder.context)
                             .load(author.photoURL)

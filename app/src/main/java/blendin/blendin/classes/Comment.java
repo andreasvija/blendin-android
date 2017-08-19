@@ -24,8 +24,7 @@ public class Comment implements Serializable {
     public Comment(String authorID, String content) {
         this.authorID = authorID;
         this.content = content;
-
-        //this.id = "12"; // TODO: generate id in backend and add here later
+        
         this.timestamp = System.currentTimeMillis();
         /*this.location = new Location(""); // TODO: find location when creating comment
         this.location.setLatitude(56.949d);

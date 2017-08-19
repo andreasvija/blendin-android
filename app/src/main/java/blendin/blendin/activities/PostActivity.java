@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.Profile;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -137,10 +138,21 @@ public class PostActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+
+        Profile profile = Profile.getCurrentProfile();
+        String id = profile.getId();
+        String name = profile.getName();
+        String photoURL = profile.getProfilePictureUri(50,50).toString();
+
+        DatabaseReference userReference = database.getReference("users").child(id);
+        userReference.child("id").setValue(id);
+        userReference.child("name").setValue(name);
+        userReference.child("photoURL").setValue(photoURL);
+
         EditText box = (EditText) findViewById(R.id.commentText);
         String content = box.getText().toString();
         box.setText("");
-        Comment comment = new Comment("123", content);
+        Comment comment = new Comment(id, content);
         DatabaseReference commentReference = postCommentsReference.push();
         comment.id = commentReference.getKey();
         commentReference.setValue(comment);
@@ -150,18 +162,18 @@ public class PostActivity extends Activity implements View.OnClickListener {
         ChildEventListener listener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.d("###", "onChildAdded");
+                //Log.d("###", "onChildAdded");
 
                 if (dataSnapshot.getKey().equals("commentCount")) {
 
-                    Log.d("###", "Key is " + dataSnapshot.getKey());
+                    //Log.d("###", "Key is " + dataSnapshot.getKey());
                     if (dataSnapshot.getValue() == null) {
-                        Log.d("###", "Value is null");
+                        //Log.d("###", "Value is null");
                         //commentCountReference.setValue("pls y");
                     } else {
                         long currentCount = (long) dataSnapshot.getValue();
                         postReference.child("commentCount").setValue(currentCount + 1);
-                        Log.d("###", "Value should now be " + String.valueOf(currentCount+1));
+                        //Log.d("###", "Value should now be " + String.valueOf(currentCount+1));
                     }
                 }
             }
@@ -172,7 +184,7 @@ public class PostActivity extends Activity implements View.OnClickListener {
         };
 
         postReference.addChildEventListener(listener);
-        Log.d("###", "added listener");
+        //Log.d("###", "added listener");
     }
 
 }
