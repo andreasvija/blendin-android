@@ -36,8 +36,7 @@ public class Post implements Serializable {
         this.title = title;
         this.content = content;
 
-        //this.id = "12"; // TODO: generate id in backend
-        this.timestamp = 1501794232000L; // TODO: generate time when creating post
+        this.timestamp = System.currentTimeMillis();
 
         /*this.location = new Location(""); // TODO: find location when creating post
         this.location.setLatitude(56.949d);

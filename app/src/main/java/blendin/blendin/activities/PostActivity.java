@@ -142,16 +142,16 @@ public class PostActivity extends Activity implements View.OnClickListener {
         Profile profile = Profile.getCurrentProfile();
         String id = profile.getId();
         String name = profile.getName();
-        String photoURL = profile.getProfilePictureUri(50,50).toString();
+        String photoURL = profile.getProfilePictureUri(200,200).toString();
 
         DatabaseReference userReference = database.getReference("users").child(id);
         userReference.child("id").setValue(id);
         userReference.child("name").setValue(name);
         userReference.child("photoURL").setValue(photoURL);
 
-        EditText box = (EditText) findViewById(R.id.commentText);
-        String content = box.getText().toString();
-        box.setText("");
+        EditText contentBox = (EditText) findViewById(R.id.commentText);
+        String content = contentBox.getText().toString();
+        contentBox.setText("");
         Comment comment = new Comment(id, content);
         DatabaseReference commentReference = postCommentsReference.push();
         comment.id = commentReference.getKey();

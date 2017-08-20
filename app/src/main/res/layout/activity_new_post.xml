@@ -71,7 +71,7 @@
                 </LinearLayout>
 
                 <EditText
-                    android:id="@+id/details"
+                    android:id="@+id/title_box"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="What is your problem?"
@@ -83,7 +83,7 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/postContent"
+            android:id="@+id/content_box"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:hint="Describe your problem in details i.e. Who can help me with translation?"
@@ -104,7 +104,7 @@
             android:layout_gravity="center_horizontal"
             android:background="@color/colorPrimary"
             android:textColor="#FFFFFF"
-            android:src="@android:drawable/ic_menu_send"/>
+            android:clickable="true"/>
 
     </LinearLayout>
 
