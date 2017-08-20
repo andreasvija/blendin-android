@@ -5,7 +5,10 @@
 package blendin.blendin.activities;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -105,7 +108,19 @@ public class CategoriesActivity extends Activity implements View.OnClickListener
         }
 
         if (id == R.id.action_profile) {
-            //startActivity(new Intent(this, ProfileActivity.class));
+
+            BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (intent.getAction().equals("finish_activity")) {
+                        finish();
+                    }
+                }
+            };
+            registerReceiver(broadcastReceiver, new IntentFilter("finish_activity"));
+
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
             return true;
         }
 

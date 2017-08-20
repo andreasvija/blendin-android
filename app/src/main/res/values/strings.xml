@@ -3,8 +3,7 @@
     <string name="facebook_app_id">248555865650912</string>
     <string name="fb_login_protocol_scheme">fb248555865650912</string>
 
-    <string-array
-        name="categories_array">
+    <string-array name="categories_array">
         <item>Finance</item>
         <item>Food</item>
         <item>Other</item>

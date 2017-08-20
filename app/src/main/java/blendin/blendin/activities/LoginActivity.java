@@ -34,7 +34,7 @@ public class LoginActivity extends Activity {
         }
 
         loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions("email", "public_profile");
+        loginButton.setReadPermissions("email", "public_profile", "user_location", "user_hometown");
         // If using in a fragment
         //loginButton.setFragment(this);
 

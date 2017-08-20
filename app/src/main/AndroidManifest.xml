@@ -42,7 +42,8 @@
         </activity>
         <activity android:name=".activities.CategoriesActivity" />
         <activity android:name=".activities.PostActivity" />
-        <activity android:name=".activities.NewPostActivity"></activity>
+        <activity android:name=".activities.NewPostActivity" />
+        <activity android:name=".activities.ProfileActivity"/>
     </application>
 
 </manifest>
