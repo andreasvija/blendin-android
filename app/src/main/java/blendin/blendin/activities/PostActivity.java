@@ -41,7 +41,6 @@ public class PostActivity extends Activity implements View.OnClickListener {
 
     private Post post; // The post being viewed
     private ArrayList<Comment> comments; // Comments under the post
-    User author;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter commentAdapter;
@@ -63,19 +62,18 @@ public class PostActivity extends Activity implements View.OnClickListener {
 
             database = FirebaseDatabase.getInstance();
             DatabaseReference authorReference = database.getReference("users").child(post.authorID);
-            author = new User();
 
             ChildEventListener userListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     if (dataSnapshot.getKey().equals("name")) {
-                        author.name = (String) dataSnapshot.getValue();
-                        ((TextView) findViewById(R.id.author_name)).setText(author.name);
+                        String authorName = (String) dataSnapshot.getValue();
+                        ((TextView) findViewById(R.id.author_name)).setText(authorName);
                     }
                     else {
-                        author.photoURL = (String) dataSnapshot.getValue();
+                        String authorPhotoURL = (String) dataSnapshot.getValue();
                         Picasso.with(getParent())
-                                .load(author.photoURL)
+                                .load(authorPhotoURL)
                                 //.resize(width,height).noFade()
                                 .into((ImageView) findViewById(R.id.author_photo));
                     }
@@ -140,23 +138,28 @@ public class PostActivity extends Activity implements View.OnClickListener {
     public void onClick(View view) {
 
         Profile profile = Profile.getCurrentProfile();
-        String id = profile.getId();
-        String name = profile.getName();
+        String authorID = profile.getId();
+        /*String name = profile.getName();
         String photoURL = profile.getProfilePictureUri(200,200).toString();
 
-        DatabaseReference userReference = database.getReference("users").child(id);
-        userReference.child("id").setValue(id);
+        DatabaseReference userReference = database.getReference("users").child(authorID);
+        userReference.child("id").setValue(authorID);
         userReference.child("name").setValue(name);
-        userReference.child("photoURL").setValue(photoURL);
+        userReference.child("photoURL").setValue(photoURL);*/
 
         EditText contentBox = (EditText) findViewById(R.id.commentText);
         String content = contentBox.getText().toString();
         contentBox.setText("");
-        Comment comment = new Comment(id, content);
+
+        Comment comment = new Comment(authorID, content);
         DatabaseReference commentReference = postCommentsReference.push();
         comment.id = commentReference.getKey();
         commentReference.setValue(comment);
 
+        incrementCommentCount();
+    }
+
+    void incrementCommentCount() {
         final DatabaseReference postReference = database.getReference("posts").child(post.category).child(post.id);
 
         ChildEventListener listener = new ChildEventListener() {
@@ -184,7 +187,6 @@ public class PostActivity extends Activity implements View.OnClickListener {
         };
 
         postReference.addChildEventListener(listener);
-        //Log.d("###", "added listener");
     }
 
 }

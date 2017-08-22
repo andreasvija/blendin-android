@@ -19,7 +19,11 @@ import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import blendin.blendin.R;
 
@@ -45,23 +49,14 @@ public class ProfileActivity extends Activity {
                 //.resize(width,height).noFade()
                 .into((ImageView) findViewById(R.id.picture));
 
-        /*new GraphRequest(
-            AccessToken.getCurrentAccessToken(),
-            "/" + id,
-            null,
-            HttpMethod.GET,
-            new GraphRequest.Callback() {
-                public void onCompleted(GraphResponse response) {
-                    Log.d("###", response.toString());
-                    response.getJSONObject().get("graphObject");
-                }
-            }
-        ).executeAsync();*/
+        //((TextView) findViewById(R.id.language_field)).setText(language);
+        //((TextView) findViewById(R.id.lives_in_field)).setText(location);
 
         findViewById(R.id.logout_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LoginManager.getInstance().logOut();
+                FirebaseAuth.getInstance().signOut();
 
                 Intent broadcastIntent = new Intent("finish_activity");
                 sendBroadcast(broadcastIntent);

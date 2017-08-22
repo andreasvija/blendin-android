@@ -36,7 +36,6 @@ import blendin.blendin.activities.PostActivity;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     ArrayList<Post> posts;
-    User author;
 
     public PostAdapter(ArrayList<Post> posts) {
         this.posts = posts;
@@ -92,19 +91,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference authorReference = database.getReference("users").child(post.authorID);
-        author = new User();
 
         ChildEventListener listener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot.getKey().equals("name")) {
-                    author.name = (String) dataSnapshot.getValue();
-                    holder.nameView.setText(author.name);
+                    String authorName = (String) dataSnapshot.getValue();
+                    holder.nameView.setText(authorName);
                 }
                 else {
-                    author.photoURL = (String) dataSnapshot.getValue();
+                    String authorPhotoURL = (String) dataSnapshot.getValue();
                     Picasso.with(holder.context)
-                            .load(author.photoURL)
+                            .load(authorPhotoURL)
                             //.resize(width,height).noFade()
                             .into(holder.photoView);
                 }

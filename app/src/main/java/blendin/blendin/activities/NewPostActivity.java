@@ -46,15 +46,16 @@ public class NewPostActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+
         String authorID = profile.getId();
-        String name = profile.getName();
-        String photoURL = profile.getProfilePictureUri(200,200).toString();
+        /*String name = profile.getName();
+        String photoURL = profile.getProfilePictureUri(200,200).toString();*/
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference userReference = database.getReference("users").child(authorID);
+        /*DatabaseReference userReference = database.getReference("users").child(authorID);
         userReference.child("id").setValue(authorID);
         userReference.child("name").setValue(name);
-        userReference.child("photoURL").setValue(photoURL);
+        userReference.child("photoURL").setValue(photoURL);*/
 
         Spinner categorySpinner = (Spinner) findViewById(R.id.post_category);
         String category = categorySpinner.getSelectedItem().toString();

@@ -37,7 +37,6 @@ import blendin.blendin.activities.PostActivity;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
     ArrayList<Comment> comments;
-    User author;
 
     public CommentAdapter(ArrayList<Comment> comments) {
         this.comments = comments;
@@ -90,20 +89,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference authorReference = database.getReference("users").child(comment.authorID);
-        author = new User();
 
         ChildEventListener listener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 //Log.d("###","onChildAdded for " + comment.content);
                 if (dataSnapshot.getKey().equals("name")) {
-                    author.name = (String) dataSnapshot.getValue();
-                    holder.nameView.setText(author.name);
+                    String authorName = (String) dataSnapshot.getValue();
+                    holder.nameView.setText(authorName);
                 }
                 else if (dataSnapshot.getKey().equals("photoURL")){
-                    author.photoURL = (String) dataSnapshot.getValue();
+                    String authorPhotoURL = (String) dataSnapshot.getValue();
                     Picasso.with(holder.context)
-                            .load(author.photoURL)
+                            .load(authorPhotoURL)
                             //.resize(width,height).noFade()
                             .into(holder.photoView);
                 }
