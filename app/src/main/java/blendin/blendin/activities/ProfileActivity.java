@@ -2,6 +2,7 @@ package blendin.blendin.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,7 +43,7 @@ public class ProfileActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        String userID = getIntent().getExtras().getString("userID");
+        final String userID = getIntent().getExtras().getString("userID");
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference authorReference = database.getReference("users").child(userID);
@@ -78,9 +79,9 @@ public class ProfileActivity extends Activity {
 
         authorReference.addChildEventListener(userListener);
 
-        //TODO: if viewing own profile do the following, else don't display the button
+        if (false/*userID.equals(Profile.getCurrentProfile().getId())*/) {
 
-        if (userID.equals(Profile.getCurrentProfile().getId())) {
+            findViewById(R.id.messenger_button).setVisibility(View.INVISIBLE);
 
             findViewById(R.id.logout_button).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -98,6 +99,7 @@ public class ProfileActivity extends Activity {
         }
         else {
             findViewById(R.id.logout_button).setVisibility(View.GONE);
+            
         }
     }
 }

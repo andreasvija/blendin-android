@@ -33,8 +33,16 @@
         android:layout_gravity="center_horizontal"
         android:background="#ee6352"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="60dp">
+        android:layout_marginBottom="20dp">
     </View>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/messenger_bubble_large_blue"
+        android:id="@+id/messenger_button"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
