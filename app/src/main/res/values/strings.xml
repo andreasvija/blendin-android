@@ -2,6 +2,7 @@
     <string name="app_name">BlendIn</string>
     <string name="facebook_app_id">248555865650912</string>
     <string name="fb_login_protocol_scheme">fb248555865650912</string>
+    <!--<string name="google_api_key">AIzaSyDTMI2J1nIs36af-Kbvla5613uWG8m0JuA</string>-->
 
     <string-array name="categories_array">
         <item>Finance</item>

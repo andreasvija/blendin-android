@@ -10,12 +10,22 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        packagingOptions {
+            pickFirst 'META-INF/LICENSE'
+            pickFirst  'META-INF/io.netty.versions.properties'
+            pickFirst 'META-INF/INDEX.LIST'
+            pickFirst 'project.properties'
+        }
+    }
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:2.0.1'
     }
 }
 
@@ -28,6 +38,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    testCompile 'junit:junit:4.12'
     //compile 'com.android.support:support-v4:25.3.1'
     //compile files('libs/picasso-2.5.2.jar')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -38,7 +49,13 @@ dependencies {
     compile 'com.google.firebase:firebase-core:11.2.0'
     compile 'com.google.firebase:firebase-database:11.2.0'
     compile 'com.google.firebase:firebase-auth:11.2.0'
-    testCompile 'junit:junit:4.12'
+    compile ('com.google.cloud:google-cloud-translate:1.4.0') /*{
+        exclude group: 'com.google.code.findbugs'
+    }*/
+    //compile 'com.google.apis:google-api-services-translate:v2-rev51-1.22.0'
+    //compile 'com.google.code.findbugs:jsr305:2.0.1'
+    //testCompile 'com.google.code.findbugs:jsr305:2.0.1'
+    compile 'com.android.support:multidex:1.0.1'
 }
 
 

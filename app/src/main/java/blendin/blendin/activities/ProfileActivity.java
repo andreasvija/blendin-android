@@ -99,7 +99,7 @@ public class ProfileActivity extends Activity {
         }
         else {
             findViewById(R.id.logout_button).setVisibility(View.GONE);
-            
+
         }
     }
 }
