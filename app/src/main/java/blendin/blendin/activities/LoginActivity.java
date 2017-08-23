@@ -131,13 +131,10 @@ public class LoginActivity extends Activity {
 
         GraphRequest.Callback callback = new GraphRequest.Callback() {
             public void onCompleted(GraphResponse response) {
-
                 JSONObject json = response.getJSONObject();
                 try {
-                    //Log.d("###", json.toString());
                     location = json.getJSONObject("location").getString("name");
                     hometown = json.getJSONObject("hometown").getString("name");
-
                     String userLocation = "Not available";
 
                     if (location != null) {
@@ -150,7 +147,6 @@ public class LoginActivity extends Activity {
                             userLocation = hometown;
                         }
                     }
-
                     userReference.child("location").setValue(userLocation);
 
                 } catch (Exception e) {
@@ -159,7 +155,6 @@ public class LoginActivity extends Activity {
                 }
             }
         };
-
         GraphRequest request = new GraphRequest(token, query, null, HttpMethod.GET, callback);
         request.executeAsync();
     }

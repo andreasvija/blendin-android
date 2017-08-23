@@ -33,6 +33,7 @@ import java.util.Locale;
 import blendin.blendin.R;
 import blendin.blendin.activities.CategoriesActivity;
 import blendin.blendin.activities.PostActivity;
+import blendin.blendin.activities.ProfileActivity;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
@@ -90,7 +91,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference authorReference = database.getReference("users").child(comment.authorID);
 
-        ChildEventListener listener = new ChildEventListener() {
+        ChildEventListener userListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 //Log.d("###","onChildAdded for " + comment.content);
@@ -98,7 +99,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                     String authorName = (String) dataSnapshot.getValue();
                     holder.nameView.setText(authorName);
                 }
-                else if (dataSnapshot.getKey().equals("photoURL")){
+                else if (dataSnapshot.getKey().equals("photoURL")) {
                     String authorPhotoURL = (String) dataSnapshot.getValue();
                     Picasso.with(holder.context)
                             .load(authorPhotoURL)
@@ -112,7 +113,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             @Override public void onCancelled(DatabaseError databaseError) {}
         };
 
-        authorReference.addChildEventListener(listener);
+        authorReference.addChildEventListener(userListener);
 
         holder.contentView.setText(comment.content);
         CharSequence ago = DateUtils.getRelativeTimeSpanString(comment.timestamp,
@@ -132,14 +133,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             e.printStackTrace();
         }
 
-        /*holder.view.setOnClickListener(new View.OnClickListener() {
+        holder.nameView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(holder.context, PostActivity.class);
-                intent.putExtra("post", post);
+                Intent intent = new Intent(holder.context, ProfileActivity.class);
+                intent.putExtra("userID", comment.authorID);
                 holder.context.startActivity(intent);
             }
-        });*/
+        });
     }
 
     @Override

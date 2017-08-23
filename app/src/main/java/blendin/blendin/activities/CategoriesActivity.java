@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.facebook.Profile;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -120,6 +121,9 @@ public class CategoriesActivity extends Activity implements View.OnClickListener
             registerReceiver(broadcastReceiver, new IntentFilter("finish_activity"));
 
             Intent intent = new Intent(this, ProfileActivity.class);
+            Profile profile = Profile.getCurrentProfile();
+            String userID = profile.getId();
+            intent.putExtra("userID", userID);
             startActivity(intent);
             return true;
         }

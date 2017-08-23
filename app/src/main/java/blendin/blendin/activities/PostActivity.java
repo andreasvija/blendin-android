@@ -5,6 +5,7 @@
 package blendin.blendin.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -70,7 +71,7 @@ public class PostActivity extends Activity implements View.OnClickListener {
                         String authorName = (String) dataSnapshot.getValue();
                         ((TextView) findViewById(R.id.author_name)).setText(authorName);
                     }
-                    else {
+                    else if (dataSnapshot.getKey().equals("photoURL")) {
                         String authorPhotoURL = (String) dataSnapshot.getValue();
                         Picasso.with(getParent())
                                 .load(authorPhotoURL)
@@ -83,6 +84,7 @@ public class PostActivity extends Activity implements View.OnClickListener {
                 @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                 @Override public void onCancelled(DatabaseError databaseError) {}
             };
+
             authorReference.addChildEventListener(userListener);
 
             ((TextView) findViewById(R.id.title)).setText(post.title);
@@ -129,6 +131,15 @@ public class PostActivity extends Activity implements View.OnClickListener {
 
             };
             postCommentsReference.addChildEventListener(commentsListener);
+
+            findViewById(R.id.author_name).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    intent.putExtra("userID", post.authorID);
+                    startActivity(intent);
+                }
+            });
         }
 
         findViewById(R.id.sendCommentButton).setOnClickListener(this);
@@ -139,13 +150,6 @@ public class PostActivity extends Activity implements View.OnClickListener {
 
         Profile profile = Profile.getCurrentProfile();
         String authorID = profile.getId();
-        /*String name = profile.getName();
-        String photoURL = profile.getProfilePictureUri(200,200).toString();
-
-        DatabaseReference userReference = database.getReference("users").child(authorID);
-        userReference.child("id").setValue(authorID);
-        userReference.child("name").setValue(name);
-        userReference.child("photoURL").setValue(photoURL);*/
 
         EditText contentBox = (EditText) findViewById(R.id.commentText);
         String content = contentBox.getText().toString();

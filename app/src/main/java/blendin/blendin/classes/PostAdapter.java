@@ -92,14 +92,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference authorReference = database.getReference("users").child(post.authorID);
 
-        ChildEventListener listener = new ChildEventListener() {
+        ChildEventListener userListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot.getKey().equals("name")) {
                     String authorName = (String) dataSnapshot.getValue();
                     holder.nameView.setText(authorName);
                 }
-                else {
+                else  if (dataSnapshot.getKey().equals("photoURL")) {
                     String authorPhotoURL = (String) dataSnapshot.getValue();
                     Picasso.with(holder.context)
                             .load(authorPhotoURL)
@@ -113,7 +113,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override public void onCancelled(DatabaseError databaseError) {}
         };
 
-        authorReference.addChildEventListener(listener);
+        authorReference.addChildEventListener(userListener);
 
         holder.titleView.setText(post.title);
         holder.answersView.setText(String.valueOf(post.getCommentCount()) + " " + "answers");
