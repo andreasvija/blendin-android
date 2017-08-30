@@ -29,6 +29,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.facebook.Profile;
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -162,16 +165,35 @@ public class PostActivity extends Activity implements View.OnClickListener {
                             .setPositiveButton("Translate",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
-                                            TextView titleView = (TextView) ((ViewGroup) v.getParent().getParent().getParent()).getChildAt(1);
-                                            TextView contentView = (TextView) ((ViewGroup) v.getParent().getParent().getParent().getParent().getParent()).getChildAt(1);
+                                            final TextView titleView = (TextView) ((ViewGroup) v.getParent().getParent().getParent()).getChildAt(1);
+                                            final TextView contentView = (TextView) ((ViewGroup) v.getParent().getParent().getParent().getParent().getParent()).getChildAt(1);
                                             ListView listView = ((AlertDialog)dialog).getListView();
                                             int position = listView.getCheckedItemPosition();
                                             String languageName = (String) listView.getAdapter().getItem(position);
-                                            ArrayList<String> names = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.language_names_array)));
-                                            ArrayList<String> codes = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.language_codes_array)));
-                                            String languageCode = codes.get(names.indexOf(languageName));
-                                            titleView.setText(languageCode);
-                                            contentView.setText(languageCode);
+                                            ArrayList<String> names = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.language_names_array)));
+                                            ArrayList<String> codes = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.language_codes_array)));
+                                            final String languageCode = codes.get(names.indexOf(languageName));
+
+                                            Thread thread = new Thread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Translate translate = TranslateOptions.newBuilder().setApiKey(getResources().getString(R.string.google_api_key)).build().getService();
+                                                    Translate.TranslateOption target = Translate.TranslateOption.targetLanguage(languageCode);
+                                                    final Translation titleTranslation = translate.translate(titleView.getText().toString(), target);
+                                                    final Translation contentTranslation = translate.translate(contentView.getText().toString(), target);
+                                                    runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            titleView.setText(titleView.getText() + "\n-----\n" + titleTranslation.getTranslatedText());
+                                                            contentView.setText(contentView.getText() + "\n-----\n" + contentTranslation.getTranslatedText());
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                            thread.start();
+
+                                            //titleView.setText(languageCode);
+                                            //contentView.setText(languageCode);
                                         }
                             })
                             .setNegativeButton("cancel",

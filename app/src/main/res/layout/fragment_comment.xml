@@ -76,6 +76,12 @@
                         android:textColor="#3c3744"
                         android:textSize="10sp" />
 
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/translate_button"
+                        android:src="@drawable/translate_icon"/>
+
                 </LinearLayout>
 
             </RelativeLayout>
