@@ -19,6 +19,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.facebook.Profile;
+import com.google.cloud.translate.Language;
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.TranslateOptions;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -86,6 +89,19 @@ public class CategoriesActivity extends Activity implements View.OnClickListener
         // "All" is the default category
         activeCategory = R.id.category_all;
         switchActiveCategory(activeCategory);
+
+        /*Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Translate translate = TranslateOptions.newBuilder().build().getService();
+                Translate.LanguageListOption target = Translate.LanguageListOption.targetLanguage("en");
+                List<Language> languages = translate.listSupportedLanguages(target);
+                for (Language language : languages) {
+                    Log.d("###", language.getName());
+                }
+            }
+        });
+        thread.start();*/
     }
 
     @Override

@@ -5,17 +5,27 @@
 package blendin.blendin.activities;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.facebook.Profile;
@@ -28,6 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -138,6 +149,50 @@ public class PostActivity extends Activity implements View.OnClickListener {
                     Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                     intent.putExtra("userID", post.authorID);
                     startActivity(intent);
+                }
+            });
+
+            findViewById(R.id.translate_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    //String languageCode;
+                    AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this, R.style.MyDialogTheme);
+                    // The Android Dialog is missing theme resources if the app theme is not an Appcompat one
+                    builder.setTitle("Choose language to translate into")
+                            .setPositiveButton("Translate",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            TextView titleView = (TextView) ((ViewGroup) v.getParent().getParent().getParent()).getChildAt(1);
+                                            TextView contentView = (TextView) ((ViewGroup) v.getParent().getParent().getParent().getParent().getParent()).getChildAt(1);
+                                            ListView listView = ((AlertDialog)dialog).getListView();
+                                            int position = listView.getCheckedItemPosition();
+                                            String languageName = (String) listView.getAdapter().getItem(position);
+                                            ArrayList<String> names = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.language_names_array)));
+                                            ArrayList<String> codes = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.language_codes_array)));
+                                            String languageCode = codes.get(names.indexOf(languageName));
+                                            titleView.setText(languageCode);
+                                            contentView.setText(languageCode);
+                                        }
+                            })
+                            .setNegativeButton("cancel",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+
+                                        }
+                            })
+                            .setSingleChoiceItems(R.array.language_names_array,
+                                    0,
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            String[] codes = getResources().getStringArray(R.array.language_codes_array);
+                                            //languageCode = codes[which];
+                                            Log.d("###", "Chosen: " + codes[which]);
+                                        }
+                            });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
             });
         }
