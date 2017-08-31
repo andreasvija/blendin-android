@@ -90,15 +90,23 @@ public class CategoriesActivity extends Activity implements View.OnClickListener
         activeCategory = R.id.category_all;
         switchActiveCategory(activeCategory);
 
+        // TODO: download supported languages in user picked language
         /*Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                Translate translate = TranslateOptions.newBuilder().build().getService();
+                Translate translate = TranslateOptions.newBuilder().setApiKey(getString(R.string.GOOGLE_API_KEY)).build().getService();
                 Translate.LanguageListOption target = Translate.LanguageListOption.targetLanguage("en");
                 List<Language> languages = translate.listSupportedLanguages(target);
+                String output1 = "";
                 for (Language language : languages) {
-                    Log.d("###", language.getName());
+                    output1 += "<item>" + language.getName() + "</item>\n";
                 }
+                String output2 = "";
+                for (Language language : languages) {
+                    output2 += "<item>" + language.getCode() + "</item>\n";
+                }
+                Log.d("###", output1);
+                Log.d("###", output2);
             }
         });
         thread.start();*/
