@@ -21,16 +21,16 @@ public class Comment implements Serializable {
 
     }
 
-    public Comment(String authorID, String content) {
+    public Comment(String authorID, String content, double latitude, double longitude) {
         this.authorID = authorID;
         this.content = content;
         
         this.timestamp = System.currentTimeMillis();
-        /*this.location = new Location(""); // TODO: find location when creating comment
+        /*this.location = new Location(""); //
         this.location.setLatitude(56.949d);
         this.location.setLongitude(24.106d); */
-        this.latitude = 56.949d;
-        this.longitude = 24.106d;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     // Getter methods required for importing Firebase database data into custom class objects

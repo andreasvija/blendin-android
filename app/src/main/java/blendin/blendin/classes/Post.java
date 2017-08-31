@@ -30,7 +30,7 @@ public class Post implements Serializable {
 
     }
 
-    public Post(String authorID, String category, String title, String content /*, ArrayList<Comment> comments*/) {
+    public Post(String authorID, String category, String title, String content, double latitude, double longitude /*, ArrayList<Comment> comments*/) {
         this.authorID = authorID;
         this.category = category;
         this.title = title;
@@ -38,11 +38,11 @@ public class Post implements Serializable {
 
         this.timestamp = System.currentTimeMillis();
 
-        /*this.location = new Location(""); // TODO: find location when creating post
+        /*this.location = new Location("");
         this.location.setLatitude(56.949d);
         this.location.setLongitude(24.106d); */
-        this.latitude = 56.949d;
-        this.longitude = 24.106d;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.commentCount = 0;
 
         //this.comments = comments;

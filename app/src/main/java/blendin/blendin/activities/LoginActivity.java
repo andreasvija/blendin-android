@@ -63,7 +63,7 @@ public class LoginActivity extends Activity {
         }
 
         loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions("public_profile", "user_location", "user_hometown", "user_locale");
+        loginButton.setReadPermissions("public_profile", "user_location");
         //id, name, profile pic; location; backup location; app language
 
         callbackManager = CallbackManager.Factory.create();
