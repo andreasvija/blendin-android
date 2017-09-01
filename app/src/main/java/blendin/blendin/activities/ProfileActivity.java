@@ -29,6 +29,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import blendin.blendin.R;
@@ -66,10 +67,17 @@ public class ProfileActivity extends Activity {
                     String location = (String) dataSnapshot.getValue();
                     ((TextView) findViewById(R.id.lives_in_field)).setText(location);
                 }
-                /*else if (dataSnapshot.getKey().equals("languages")) {
-                    List<String> languages = (List<String>) dataSnapshot.getValue();
-                    ((TextView) findViewById(R.id.lives_in_field)).setText("");
-                }*/
+                else if (dataSnapshot.getKey().equals("languages")) {
+                    ArrayList<String> languages = (ArrayList<String>) dataSnapshot.getValue();
+                    String text = "";
+                    for (int i = 0; i < languages.size(); i++) {
+                        text += languages.get(i);
+                        if (i+1 < languages.size()) {
+                            text += ", ";
+                        }
+                    }
+                    ((TextView) findViewById(R.id.language_field)).setText(text);
+                }
             }
             @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
             @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
@@ -79,7 +87,7 @@ public class ProfileActivity extends Activity {
 
         authorReference.addChildEventListener(userListener);
 
-        if (false/*userID.equals(Profile.getCurrentProfile().getId())*/) {
+        if (userID.equals(Profile.getCurrentProfile().getId())) {
 
             findViewById(R.id.messenger_button).setVisibility(View.INVISIBLE);
 

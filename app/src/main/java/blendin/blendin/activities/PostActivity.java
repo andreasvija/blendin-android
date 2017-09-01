@@ -68,7 +68,7 @@ import blendin.blendin.classes.Post;
 import blendin.blendin.classes.CommentAdapter;
 import blendin.blendin.classes.User;
 
-public class PostActivity extends Activity{
+public class PostActivity extends Activity {
 
     private Post post; // The post being viewed
     private ArrayList<Comment> comments; // Comments under the post

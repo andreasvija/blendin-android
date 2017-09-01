@@ -38,7 +38,7 @@ import blendin.blendin.classes.PostAdapter;
 import blendin.blendin.classes.PostChildEventListener;
 import blendin.blendin.classes.User;
 
-public class CategoriesActivity extends Activity implements View.OnClickListener {
+public class CategoriesActivity extends Activity {
 
     int activeCategory; // Number of the currently active category
     //public static ArrayList<Post> allPosts; // All posts in the system
@@ -64,14 +64,24 @@ public class CategoriesActivity extends Activity implements View.OnClickListener
         //allPosts = new ArrayList<>();
         //getPosts();
 
+        View.OnClickListener onCategoryClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int id = v.getId();
+                //String s = getResources().getResourceEntryName(id);
+                //Log.d("###", "onClick: " + s);
+                switchActiveCategory(id);
+            }
+        };
+
         // Make category labels clickable
-        findViewById(R.id.category_all).setOnClickListener(this);
-        findViewById(R.id.category_finance).setOnClickListener(this);
-        findViewById(R.id.category_food).setOnClickListener(this);
-        findViewById(R.id.category_shopping).setOnClickListener(this);
-        findViewById(R.id.category_transport).setOnClickListener(this);
-        findViewById(R.id.category_travel).setOnClickListener(this);
-        findViewById(R.id.category_other).setOnClickListener(this);
+        findViewById(R.id.category_all).setOnClickListener(onCategoryClickListener);
+        findViewById(R.id.category_finance).setOnClickListener(onCategoryClickListener);
+        findViewById(R.id.category_food).setOnClickListener(onCategoryClickListener);
+        findViewById(R.id.category_shopping).setOnClickListener(onCategoryClickListener);
+        findViewById(R.id.category_transport).setOnClickListener(onCategoryClickListener);
+        findViewById(R.id.category_travel).setOnClickListener(onCategoryClickListener);
+        findViewById(R.id.category_other).setOnClickListener(onCategoryClickListener);
 
         // Set up the RecyclerView of the posts
         recyclerView = (RecyclerView) findViewById(R.id.posts_view);
@@ -159,15 +169,6 @@ public class CategoriesActivity extends Activity implements View.OnClickListener
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    // On category click switch to that category
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        //String s = getResources().getResourceEntryName(id);
-        //Log.d("###", "onClick: " + s);
-        switchActiveCategory(id);
     }
 
     // Changes highlighted category and the data used in RecyclerView
