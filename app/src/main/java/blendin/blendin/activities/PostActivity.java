@@ -18,17 +18,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.facebook.Profile;
@@ -53,7 +47,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -66,7 +59,6 @@ import blendin.blendin.R;
 import blendin.blendin.classes.Comment;
 import blendin.blendin.classes.Post;
 import blendin.blendin.classes.CommentAdapter;
-import blendin.blendin.classes.User;
 
 public class PostActivity extends Activity {
 
@@ -89,9 +81,7 @@ public class PostActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            //post = (Post) getIntent().getSerializableExtra("post");
             post = (Post) extras.get("post");
-            //comments = post.comments;
 
             database = FirebaseDatabase.getInstance();
             DatabaseReference authorReference = database.getReference("users").child(post.authorID);
@@ -176,7 +166,6 @@ public class PostActivity extends Activity {
             findViewById(R.id.translate_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    //String languageCode;
                     AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this, R.style.MyDialogTheme);
                     // The Android Dialog is missing theme resources if the app theme is not an Appcompat one
                     builder.setTitle("Choose language to translate into")
@@ -209,9 +198,6 @@ public class PostActivity extends Activity {
                                                 }
                                             });
                                             thread.start();
-
-                                            //titleView.setText(languageCode);
-                                            //contentView.setText(languageCode);
                                         }
                             })
                             .setNegativeButton("cancel",
@@ -324,18 +310,14 @@ public class PostActivity extends Activity {
         ChildEventListener listener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                //Log.d("###", "onChildAdded");
 
                 if (dataSnapshot.getKey().equals("commentCount")) {
 
-                    //Log.d("###", "Key is " + dataSnapshot.getKey());
                     if (dataSnapshot.getValue() == null) {
-                        //Log.d("###", "Value is null");
-                        //commentCountReference.setValue("pls y");
+
                     } else {
                         long currentCount = (long) dataSnapshot.getValue();
                         postReference.child("commentCount").setValue(currentCount + 1);
-                        //Log.d("###", "Value should now be " + String.valueOf(currentCount+1));
                     }
                 }
             }

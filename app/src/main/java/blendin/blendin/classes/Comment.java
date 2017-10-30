@@ -12,9 +12,8 @@ public class Comment implements Serializable {
     public String authorID;
     public String content;
     public long timestamp; //generated upon creation
-    //public Location location; //generated upon creation
-    public double latitude;
-    public double longitude;
+    public double latitude; //generated upon creation
+    public double longitude; //generated upon creation
 
     // Empty constructor required for importing Firebase database data into custom class objects
     public Comment() {
@@ -24,11 +23,7 @@ public class Comment implements Serializable {
     public Comment(String authorID, String content, double latitude, double longitude) {
         this.authorID = authorID;
         this.content = content;
-        
         this.timestamp = System.currentTimeMillis();
-        /*this.location = new Location(""); //
-        this.location.setLatitude(56.949d);
-        this.location.setLongitude(24.106d); */
         this.latitude = latitude;
         this.longitude = longitude;
     }

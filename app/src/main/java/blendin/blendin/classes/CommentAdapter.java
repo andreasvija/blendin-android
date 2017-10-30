@@ -8,14 +8,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +37,6 @@ import java.util.List;
 import java.util.Locale;
 
 import blendin.blendin.R;
-import blendin.blendin.activities.CategoriesActivity;
-import blendin.blendin.activities.PostActivity;
 import blendin.blendin.activities.ProfileActivity;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
@@ -105,7 +100,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         ChildEventListener userListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                //Log.d("###","onChildAdded for " + comment.content);
                 if (dataSnapshot.getKey().equals("name")) {
                     String authorName = (String) dataSnapshot.getValue();
                     holder.nameView.setText(authorName);
@@ -156,7 +150,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.translateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                //String languageCode;
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext(), R.style.MyDialogTheme);
                 // The Android Dialog is missing theme resources if the app theme is not an Appcompat one
                 builder.setTitle("Choose language to translate into")
@@ -186,9 +179,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                                             }
                                         });
                                         thread.start();
-
-                                        //titleView.setText(languageCode);
-                                        //contentView.setText(languageCode);
                                     }
                                 })
                         .setNegativeButton("cancel",
@@ -201,11 +191,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                                 0,
                                 new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        //String[] codes = Resources.getSystem().getStringArray(R.array.language_codes_array);
-                                        //languageCode = codes[which];
-                                        //Log.d("###", "Chosen: " + codes[which]);
-                                    }
+                                    public void onClick(DialogInterface dialog, int which) {}
                                 });
 
                 AlertDialog dialog = builder.create();

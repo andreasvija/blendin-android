@@ -12,36 +12,26 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.facebook.Profile;
-import com.google.cloud.translate.Language;
-import com.google.cloud.translate.Translate;
-import com.google.cloud.translate.TranslateOptions;
 import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import blendin.blendin.R;
-import blendin.blendin.classes.Comment;
 import blendin.blendin.classes.Post;
 import blendin.blendin.classes.PostAdapter;
 import blendin.blendin.classes.PostChildEventListener;
-import blendin.blendin.classes.User;
 
 public class CategoriesActivity extends Activity {
 
     int activeCategory; // Number of the currently active category
-    //public static ArrayList<Post> allPosts; // All posts in the system
     public static ArrayList<Post> selectedPosts; // Posts of the current selected category
 
     private RecyclerView recyclerView;
@@ -50,7 +40,6 @@ public class CategoriesActivity extends Activity {
 
     FirebaseDatabase database;
     DatabaseReference postsReference;
-    //ChildEventListener childEventListener;
     ArrayList<DatabaseReference> usedReferences;
     ArrayList<ChildEventListener> activeListeners;
 
@@ -61,15 +50,10 @@ public class CategoriesActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
 
-        //allPosts = new ArrayList<>();
-        //getPosts();
-
         View.OnClickListener onCategoryClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int id = v.getId();
-                //String s = getResources().getResourceEntryName(id);
-                //Log.d("###", "onClick: " + s);
                 switchActiveCategory(id);
             }
         };
@@ -88,10 +72,6 @@ public class CategoriesActivity extends Activity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        // Make it use a custom Adapter
-        //postAdapter = new PostAdapter(selectedPosts);
-        //recyclerView.setAdapter(postAdapter);
-
         database = FirebaseDatabase.getInstance();
         postsReference = database.getReference("posts");
         activeListeners = new ArrayList<>();
@@ -101,6 +81,8 @@ public class CategoriesActivity extends Activity {
         switchActiveCategory(activeCategory);
 
         // TODO: download supported languages in user picked language
+
+        //script for downloading language names
         /*Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -162,6 +144,7 @@ public class CategoriesActivity extends Activity {
             return true;
         }
 
+        // TODO: settings
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             //startActivity(new Intent(this, SettingsActivity.class));
@@ -182,12 +165,12 @@ public class CategoriesActivity extends Activity {
         ll = (LinearLayout) findViewById(activeCategory);
         ll.setBackground(getResources().getDrawable(R.drawable.back_active));
 
-        //String category = (String) findViewById(activeCategory).getTag();
         selectedPosts = new ArrayList<>();
 
         String category = (String) findViewById(activeCategory).getTag();
         setChildEventListener(category);
 
+        // Make it use a custom adapter
         postAdapter = new PostAdapter(selectedPosts);
         recyclerView.setAdapter(postAdapter);
     }

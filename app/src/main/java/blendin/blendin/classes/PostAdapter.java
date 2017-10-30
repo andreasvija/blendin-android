@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +29,6 @@ import java.util.List;
 import java.util.Locale;
 
 import blendin.blendin.R;
-import blendin.blendin.activities.CategoriesActivity;
 import blendin.blendin.activities.PostActivity;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
@@ -48,7 +46,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public ImageView photoView;
         public TextView nameView;
         public TextView titleView;
-        //public TextView contentView;
         public TextView answersView;
         public TextView timeAgoView;
         public TextView locationView;
@@ -62,7 +59,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             photoView = (ImageView) view.findViewById(R.id.author_photo);
             nameView = (TextView) view.findViewById(R.id.author_name);
             titleView = (TextView) view.findViewById(R.id.title);
-            //detailsView = (TextView) view.findViewById(R.id.details);
             answersView = (TextView) view.findViewById(R.id.comment_count);
             timeAgoView = (TextView) view.findViewById(R.id.timestamp);
             locationView = (TextView) view.findViewById(R.id.location);

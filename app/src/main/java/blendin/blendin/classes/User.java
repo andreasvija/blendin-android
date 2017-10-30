@@ -5,7 +5,6 @@
 package blendin.blendin.classes;
 
 import java.io.Serializable;
-import java.net.URL;
 import java.util.List;
 
 public class User implements Serializable {
