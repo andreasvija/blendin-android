@@ -8,12 +8,12 @@ import java.io.Serializable;
 
 public class Comment implements Serializable {
 
-    public String id; //generated upon creation
-    public String authorID;
-    public String content;
-    public long timestamp; //generated upon creation
-    public double latitude; //generated upon creation
-    public double longitude; //generated upon creation
+    private String id; //generated upon creation
+    private String authorID;
+    private String content;
+    private long timestamp; //generated upon creation
+    private double latitude; //generated upon creation
+    private double longitude; //generated upon creation
 
     // Empty constructor required for importing Firebase database data into custom class objects
     public Comment() {
@@ -29,6 +29,10 @@ public class Comment implements Serializable {
     }
 
     // Getter methods required for importing Firebase database data into custom class objects
+
+    public String getId() {
+        return id;
+    }
     public String getAuthorID() {
         return authorID;
     }
@@ -38,11 +42,14 @@ public class Comment implements Serializable {
     public long getTimestamp() {
         return timestamp;
     }
-    public double getlatitude() {
+    public double getLatitude() {
         return latitude;
     }
     public double getLongitude() {
         return longitude;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 }

@@ -33,7 +33,7 @@ import blendin.blendin.activities.PostActivity;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
-    ArrayList<Post> posts;
+    private ArrayList<Post> posts;
 
     public PostAdapter(ArrayList<Post> posts) {
         this.posts = posts;
@@ -42,15 +42,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     // Holds all necessary views
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public View view;
-        public ImageView photoView;
-        public TextView nameView;
-        public TextView titleView;
-        public TextView answersView;
-        public TextView timeAgoView;
-        public TextView locationView;
+        View view;
+        ImageView photoView;
+        TextView nameView;
+        TextView titleView;
+        TextView answersView;
+        TextView timeAgoView;
+        TextView locationView;
 
-        public final Context context;
+        final Context context;
 
         public ViewHolder(View view) {
             super(view);
@@ -64,6 +64,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             locationView = (TextView) view.findViewById(R.id.location);
             context = view.getContext();
         }
+
     }
 
     //Initialize a new post view - called when RecyclerView starts
@@ -86,7 +87,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         final Post post = posts.get(position);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference authorReference = database.getReference("users").child(post.authorID);
+        DatabaseReference authorReference = database.getReference("users").child(post.getAuthorID());
 
         ChildEventListener userListener = new ChildEventListener() {
             @Override
@@ -111,15 +112,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         authorReference.addChildEventListener(userListener);
 
-        holder.titleView.setText(post.title);
+        holder.titleView.setText(post.getTitle());
         holder.answersView.setText(String.valueOf(post.getCommentCount()) + " " + "answers");
-        CharSequence ago = DateUtils.getRelativeTimeSpanString(post.timestamp,
+        CharSequence ago = DateUtils.getRelativeTimeSpanString(post.getTimestamp(),
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
         holder.timeAgoView.setText(ago);
         
         Geocoder geoCoder = new Geocoder(holder.context, Locale.getDefault());
         try {
-            List<Address> list = geoCoder.getFromLocation(post.latitude, post.longitude, 1);
+            List<Address> list = geoCoder.getFromLocation(post.getLatitude(), post.getLongitude(), 1);
             if (list != null) {
                 if (list.size() > 0) {
                     String location = list.get(0).getLocality();

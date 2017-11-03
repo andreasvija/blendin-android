@@ -41,7 +41,7 @@ import blendin.blendin.activities.ProfileActivity;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
-    ArrayList<Comment> comments;
+    private ArrayList<Comment> comments;
 
     public CommentAdapter(ArrayList<Comment> comments) {
         this.comments = comments;
@@ -49,15 +49,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public View view;
-        public ImageView photoView;
-        public TextView nameView;
-        public TextView contentView;
-        public TextView timeAgoView;
-        public TextView locationView;
-        public ImageView translateButton;
+        View view;
+        ImageView photoView;
+        TextView nameView;
+        TextView contentView;
+        TextView timeAgoView;
+        TextView locationView;
+        ImageView translateButton;
 
-        public final Context context;
+        final Context context;
 
         // Holds all necessary views
         public ViewHolder(View view) {
@@ -95,7 +95,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         final Comment comment = comments.get(position);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference authorReference = database.getReference("users").child(comment.authorID);
+        DatabaseReference authorReference = database.getReference("users").child(comment.getAuthorID());
 
         ChildEventListener userListener = new ChildEventListener() {
             @Override
@@ -120,14 +120,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         authorReference.addChildEventListener(userListener);
 
-        holder.contentView.setText(comment.content);
-        CharSequence ago = DateUtils.getRelativeTimeSpanString(comment.timestamp,
+        holder.contentView.setText(comment.getContent());
+        CharSequence ago = DateUtils.getRelativeTimeSpanString(comment.getTimestamp(),
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
         holder.timeAgoView.setText(ago);
 
         Geocoder geoCoder = new Geocoder(holder.context, Locale.getDefault());
         try {
-            List<Address> list = geoCoder.getFromLocation(comment.latitude, comment.longitude, 1);
+            List<Address> list = geoCoder.getFromLocation(comment.getLatitude(), comment.getLongitude(), 1);
             if (list != null) {
                 if (list.size() > 0) {
                     String location = list.get(0).getLocality();
@@ -142,7 +142,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(holder.context, ProfileActivity.class);
-                intent.putExtra("userID", comment.authorID);
+                intent.putExtra("userID", comment.getAuthorID());
                 holder.context.startActivity(intent);
             }
         });

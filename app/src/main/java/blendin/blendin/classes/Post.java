@@ -9,15 +9,15 @@ import java.lang.System;
 
 public class Post implements Serializable {
 
-    public String id; //generated upon creation
-    public String authorID;
-    public String category;
-    public String title;
-    public String content;
-    public long timestamp; //generated upon creation
-    public double latitude;
-    public double longitude;
-    public int commentCount;
+    private String id; //generated upon creation
+    private String authorID;
+    private String category;
+    private String title;
+    private String content;
+    private long timestamp; //generated upon creation
+    private double latitude;
+    private double longitude;
+    private int commentCount;
 
     // Empty constructor required for importing Firebase database data into custom class objects
     public Post() {
@@ -36,6 +36,10 @@ public class Post implements Serializable {
     }
 
     // Getter methods required for importing Firebase database data into custom class objects
+
+    public String getId() {
+        return id;
+    }
     public String getAuthorID() {
         return authorID;
     }
@@ -59,5 +63,9 @@ public class Post implements Serializable {
     }
     public int getCommentCount() {
         return commentCount;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

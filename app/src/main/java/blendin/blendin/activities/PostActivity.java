@@ -69,8 +69,8 @@ public class PostActivity extends Activity {
     private RecyclerView.Adapter commentAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    FirebaseDatabase database;
-    DatabaseReference postCommentsReference;
+    private FirebaseDatabase database;
+    private DatabaseReference postCommentsReference;
 
     private FusedLocationProviderClient locationClient;
 
@@ -84,7 +84,7 @@ public class PostActivity extends Activity {
             post = (Post) extras.get("post");
 
             database = FirebaseDatabase.getInstance();
-            DatabaseReference authorReference = database.getReference("users").child(post.authorID);
+            DatabaseReference authorReference = database.getReference("users").child(post.getAuthorID());
 
             ChildEventListener userListener = new ChildEventListener() {
                 @Override
@@ -109,16 +109,16 @@ public class PostActivity extends Activity {
 
             authorReference.addChildEventListener(userListener);
 
-            ((TextView) findViewById(R.id.title)).setText(post.title);
-            ((TextView) findViewById(R.id.content)).setText(post.content);
+            ((TextView) findViewById(R.id.title)).setText(post.getTitle());
+            ((TextView) findViewById(R.id.content)).setText(post.getContent());
 
-            CharSequence ago = DateUtils.getRelativeTimeSpanString(post.timestamp,
+            CharSequence ago = DateUtils.getRelativeTimeSpanString(post.getTimestamp(),
                     System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
             ((TextView) findViewById(R.id.timestamp)).setText(ago);
 
             Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
             try {
-                List<Address> list = geoCoder.getFromLocation(post.latitude, post.longitude, 1);
+                List<Address> list = geoCoder.getFromLocation(post.getLatitude(), post.getLongitude(), 1);
                 if (list != null & list.size() > 0) {
                     String location = list.get(0).getLocality();
                     ((TextView) findViewById(R.id.location)).setText(location);
@@ -137,7 +137,7 @@ public class PostActivity extends Activity {
             commentAdapter = new CommentAdapter(comments);
             recyclerView.setAdapter(commentAdapter);
 
-            postCommentsReference = database.getReference("comments").child(post.id);
+            postCommentsReference = database.getReference("comments").child(post.getId());
 
             ChildEventListener commentsListener = new ChildEventListener() {
                 @Override
@@ -158,7 +158,7 @@ public class PostActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                    intent.putExtra("userID", post.authorID);
+                    intent.putExtra("userID", post.getAuthorID());
                     startActivity(intent);
                 }
             });
@@ -298,14 +298,14 @@ public class PostActivity extends Activity {
 
         Comment comment = new Comment(authorID, content, latitude, longitude);
         DatabaseReference commentReference = postCommentsReference.push();
-        comment.id = commentReference.getKey();
+        comment.setId(commentReference.getKey());
         commentReference.setValue(comment);
 
         incrementCommentCount();
     }
 
     void incrementCommentCount() {
-        final DatabaseReference postReference = database.getReference("posts").child(post.category).child(post.id);
+        final DatabaseReference postReference = database.getReference("posts").child(post.getCategory()).child(post.getId());
 
         ChildEventListener listener = new ChildEventListener() {
             @Override

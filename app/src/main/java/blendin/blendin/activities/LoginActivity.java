@@ -45,14 +45,14 @@ import blendin.blendin.classes.User;
 
 public class LoginActivity extends Activity {
 
-    LoginButton loginButton;
-    CallbackManager callbackManager;
+    private LoginButton loginButton;
+    private CallbackManager callbackManager;
 
-    FirebaseAuth firebaseAuth;
-    static DatabaseReference userReference;
+    private FirebaseAuth firebaseAuth;
+    private static DatabaseReference userReference;
 
-    static String location;
-    static String hometown;
+    private static String location;
+    private static String hometown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

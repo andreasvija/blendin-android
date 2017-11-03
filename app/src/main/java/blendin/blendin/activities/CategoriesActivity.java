@@ -31,11 +31,11 @@ import blendin.blendin.classes.PostChildEventListener;
 
 public class CategoriesActivity extends Activity {
 
-    int activeCategory; // Number of the currently active category
-    public static ArrayList<Post> selectedPosts; // Posts of the current selected category
+    private int activeCategory; // Number of the currently active category
+    private static ArrayList<Post> selectedPosts; // Posts of the current selected category
 
     private RecyclerView recyclerView;
-    public static RecyclerView.Adapter postAdapter;
+    private static RecyclerView.Adapter postAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
     FirebaseDatabase database;
@@ -43,7 +43,7 @@ public class CategoriesActivity extends Activity {
     ArrayList<DatabaseReference> usedReferences;
     ArrayList<ChildEventListener> activeListeners;
 
-    public String[] categories = {"All", "Finance", "Food", "Other", "Shopping", "Transport", "Travel"};
+    private String[] categories = {"All", "Finance", "Food", "Other", "Shopping", "Transport", "Travel"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

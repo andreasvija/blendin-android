@@ -9,11 +9,11 @@ import java.util.List;
 
 public class User implements Serializable {
 
-    public String id;
-    public String name;
-    public String photoURL;
-    public String location;
-    public List<String> languages;
+    private String id;
+    private String name;
+    private String photoURL;
+    private String location;
+    private List<String> languages;
 
     // Empty constructor required for importing Firebase database data into custom class objects
     public User() {

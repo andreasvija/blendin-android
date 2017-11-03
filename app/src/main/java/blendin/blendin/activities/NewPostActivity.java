@@ -35,7 +35,7 @@ import blendin.blendin.classes.Post;
 
 public class NewPostActivity extends Activity {
 
-    Profile profile;
+    private Profile profile;
     private FusedLocationProviderClient locationClient;
 
     @Override
@@ -133,7 +133,7 @@ public class NewPostActivity extends Activity {
 
         Post post = new Post(authorID, category, title, content, latitude, longitude);
         DatabaseReference postReference = database.getReference("posts").child(category).push();
-        post.id = postReference.getKey();
+        post.setId(postReference.getKey());
         postReference.setValue(post);
 
         finish();
