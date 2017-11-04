@@ -20,7 +20,8 @@ public class Comment implements Serializable {
 
     }
 
-    public Comment(String authorID, String content, double latitude, double longitude) {
+    public Comment(String id, String authorID, String content, double latitude, double longitude) {
+        this.id = id;
         this.authorID = authorID;
         this.content = content;
         this.timestamp = System.currentTimeMillis();
@@ -49,7 +50,4 @@ public class Comment implements Serializable {
         return longitude;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 }

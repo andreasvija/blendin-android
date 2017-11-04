@@ -24,7 +24,8 @@ public class Post implements Serializable {
 
     }
 
-    public Post(String authorID, String category, String title, String content, double latitude, double longitude) {
+    public Post(String id, String authorID, String category, String title, String content, double latitude, double longitude) {
+        this.id = id;
         this.authorID = authorID;
         this.category = category;
         this.title = title;
@@ -65,7 +66,4 @@ public class Post implements Serializable {
         return commentCount;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 }

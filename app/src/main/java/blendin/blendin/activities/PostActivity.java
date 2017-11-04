@@ -296,11 +296,11 @@ public class PostActivity extends Activity {
         String content = contentBox.getText().toString();
         contentBox.setText("");
 
-        Comment comment = new Comment(authorID, content, latitude, longitude);
         DatabaseReference commentReference = postCommentsReference.push();
-        comment.setId(commentReference.getKey());
-        commentReference.setValue(comment);
+        String id = commentReference.getKey();
 
+        Comment comment = new Comment(id, authorID, content, latitude, longitude);
+        commentReference.setValue(comment);
         incrementCommentCount();
     }
 

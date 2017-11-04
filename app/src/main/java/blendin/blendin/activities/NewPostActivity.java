@@ -131,9 +131,10 @@ public class NewPostActivity extends Activity {
         EditText contentBox = (EditText) findViewById(R.id.content_box);
         String content = contentBox.getText().toString();
 
-        Post post = new Post(authorID, category, title, content, latitude, longitude);
         DatabaseReference postReference = database.getReference("posts").child(category).push();
-        post.setId(postReference.getKey());
+        String id = postReference.getKey();
+
+        Post post = new Post(id, authorID, category, title, content, latitude, longitude);
         postReference.setValue(post);
 
         finish();
