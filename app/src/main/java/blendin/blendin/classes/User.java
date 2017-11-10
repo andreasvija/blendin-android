@@ -16,6 +16,7 @@ public class User implements Serializable {
     private List<String> languages;
 
     // Empty constructor required for importing Firebase database data into custom class objects
+    @SuppressWarnings("unused")
     public User() {
 
     }
@@ -35,12 +36,14 @@ public class User implements Serializable {
     public String getName() {
         return name;
     }
+    @SuppressWarnings("unused")
     public String getPhotoURL() {
         return photoURL;
     }
     public String getLocation() {
         return location;
     }
+    @SuppressWarnings("unused")
     public List<String> getLanguages() {
         return languages;
     }

@@ -36,7 +36,6 @@ import blendin.blendin.classes.Post;
 public class NewPostActivity extends Activity {
 
     private Profile profile;
-    private FusedLocationProviderClient locationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,14 +98,15 @@ public class NewPostActivity extends Activity {
                         Log.d("###", "Location settings are not satisfied. Settings change unavailable.");
                         //return;
                 }
-                //ascertainCorrectLocationSettings();
             }
         });
     }
 
+    @SuppressWarnings("MissingPermission")
+    // Location access permissions have already been confirmed in ascertainCorrectLocationSettings()
     void getLocation() {
 
-        locationClient = LocationServices.getFusedLocationProviderClient(this);
+        FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(this);
         locationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {

@@ -32,11 +32,10 @@ import blendin.blendin.classes.PostChildEventListener;
 public class CategoriesActivity extends Activity {
 
     private int activeCategory; // Number of the currently active category
-    private static ArrayList<Post> selectedPosts; // Posts of the current selected category
+    public static ArrayList<Post> selectedPosts; // Posts of the current selected category
 
     private RecyclerView recyclerView;
-    private static RecyclerView.Adapter postAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+    public static RecyclerView.Adapter postAdapter;
 
     FirebaseDatabase database;
     DatabaseReference postsReference;
@@ -69,7 +68,7 @@ public class CategoriesActivity extends Activity {
 
         // Set up the RecyclerView of the posts
         recyclerView = (RecyclerView) findViewById(R.id.posts_view);
-        layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
         database = FirebaseDatabase.getInstance();

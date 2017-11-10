@@ -20,6 +20,7 @@ public class Post implements Serializable {
     private int commentCount;
 
     // Empty constructor required for importing Firebase database data into custom class objects
+    @SuppressWarnings("unused")
     public Post() {
 
     }
@@ -62,7 +63,7 @@ public class Post implements Serializable {
     public double getLongitude() {
         return longitude;
     }
-    public int getCommentCount() {
+    int getCommentCount() {
         return commentCount;
     }
 

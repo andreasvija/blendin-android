@@ -16,6 +16,7 @@ public class Comment implements Serializable {
     private double longitude; //generated upon creation
 
     // Empty constructor required for importing Firebase database data into custom class objects
+    @SuppressWarnings("unused")
     public Comment() {
 
     }
@@ -31,21 +32,26 @@ public class Comment implements Serializable {
 
     // Getter methods required for importing Firebase database data into custom class objects
 
+    @SuppressWarnings("WeakerAccess")
     public String getId() {
         return id;
     }
+    @SuppressWarnings("WeakerAccess")
     public String getAuthorID() {
         return authorID;
     }
     public String getContent() {
         return content;
     }
+    @SuppressWarnings("WeakerAccess")
     public long getTimestamp() {
         return timestamp;
     }
+    @SuppressWarnings("WeakerAccess")
     public double getLatitude() {
         return latitude;
     }
+    @SuppressWarnings("WeakerAccess")
     public double getLongitude() {
         return longitude;
     }

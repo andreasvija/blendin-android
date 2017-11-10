@@ -65,14 +65,10 @@ public class PostActivity extends Activity {
     private Post post; // The post being viewed
     private ArrayList<Comment> comments; // Comments under the post
 
-    private RecyclerView recyclerView;
     private RecyclerView.Adapter commentAdapter;
-    private RecyclerView.LayoutManager layoutManager;
 
     private FirebaseDatabase database;
     private DatabaseReference postCommentsReference;
-
-    private FusedLocationProviderClient locationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +115,7 @@ public class PostActivity extends Activity {
             Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
             try {
                 List<Address> list = geoCoder.getFromLocation(post.getLatitude(), post.getLongitude(), 1);
-                if (list != null & list.size() > 0) {
+                if (list != null && list.size() > 0) {
                     String location = list.get(0).getLocality();
                     ((TextView) findViewById(R.id.location)).setText(location);
                 }
@@ -128,8 +124,8 @@ public class PostActivity extends Activity {
             }
 
             // Set up the RecyclerView of the posts
-            recyclerView = (RecyclerView) findViewById(R.id.comments_view);
-            layoutManager = new LinearLayoutManager(this);
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comments_view);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(layoutManager);
 
             // Make it use a custom Adapter
@@ -242,7 +238,7 @@ public class PostActivity extends Activity {
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                 // All location settings are satisfied. The client can initialize
                 // location requests here.
-                Log.d("###", "onSuccess");
+                Log.d("###", "Location settings are correct");
                 getLocation();
             }
         });
@@ -274,15 +270,20 @@ public class PostActivity extends Activity {
         });
     }
 
+    @SuppressWarnings("MissingPermission")
+    // Location access permissions have already been confirmed in ascertainCorrectLocationSettings()
     void getLocation() {
 
-        locationClient = LocationServices.getFusedLocationProviderClient(this);
+        FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(this);
         locationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 if (location != null) {
                     Log.d("###", location.toString());
                     createAndUploadComment(location.getLatitude(), location.getLongitude());
+                }
+                else {
+                    Log.d("###", "Location is null");
                 }
             }
         });
@@ -313,9 +314,7 @@ public class PostActivity extends Activity {
 
                 if (dataSnapshot.getKey().equals("commentCount")) {
 
-                    if (dataSnapshot.getValue() == null) {
-
-                    } else {
+                    if (dataSnapshot.getValue() != null) {
                         long currentCount = (long) dataSnapshot.getValue();
                         postReference.child("commentCount").setValue(currentCount + 1);
                     }

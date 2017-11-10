@@ -45,7 +45,6 @@ import blendin.blendin.classes.User;
 
 public class LoginActivity extends Activity {
 
-    private LoginButton loginButton;
     private CallbackManager callbackManager;
 
     private FirebaseAuth firebaseAuth;
@@ -65,7 +64,7 @@ public class LoginActivity extends Activity {
             enterApp();
         }
         else {
-            loginButton = (LoginButton) findViewById(R.id.login_button);
+            LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
             loginButton.setReadPermissions("public_profile", "user_location");
             //id, name, profile pic; location; backup location; app language
 
