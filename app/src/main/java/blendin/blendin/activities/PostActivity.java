@@ -7,12 +7,10 @@ package blendin.blendin.activities;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,19 +24,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.facebook.Profile;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
@@ -57,10 +42,12 @@ import java.util.Locale;
 
 import blendin.blendin.R;
 import blendin.blendin.classes.Comment;
+import blendin.blendin.classes.LocationReceiver;
+import blendin.blendin.classes.LocationRequester;
 import blendin.blendin.classes.Post;
 import blendin.blendin.classes.CommentAdapter;
 
-public class PostActivity extends Activity {
+public class PostActivity extends Activity implements LocationReceiver {
 
     private Post post; // The post being viewed
     private ArrayList<Comment> comments; // Comments under the post
@@ -219,74 +206,25 @@ public class PostActivity extends Activity {
             });
         }
 
+        final LocationReceiver thisReference = this;
+
         findViewById(R.id.sendCommentButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ascertainCorrectLocationSettings();
+                LocationRequester.requestLocation(thisReference);
+                // received in receiveLocation()
             }
         });
     }
 
-    void ascertainCorrectLocationSettings() {
-
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-        builder.addLocationRequest(new LocationRequest().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY));
-        SettingsClient client = LocationServices.getSettingsClient(this);
-        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
-        task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
-            @Override
-            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                // All location settings are satisfied. The client can initialize
-                // location requests here.
-                Log.d("###", "Location settings are correct");
-                getLocation();
-            }
-        });
-
-        task.addOnFailureListener(this, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("###", "onFailure");
-                int statusCode = ((ApiException) e).getStatusCode();
-                switch (statusCode) {
-                    case CommonStatusCodes.RESOLUTION_REQUIRED:
-                        // Location settings are not satisfied, but this can be fixed
-                        // by showing the user a dialog.
-                        try {
-                            // Show the dialog by calling startResolutionForResult(),
-                            // and check the result in onActivityResult().
-                            ResolvableApiException resolvable = (ResolvableApiException) e;
-                            resolvable.startResolutionForResult(PostActivity.this, 100);
-                        } catch (IntentSender.SendIntentException sendEx) {
-                            Log.d("###", sendEx.getMessage());
-                        }
-                        break;
-                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                        Log.d("###", "Location settings are not satisfied. Settings change unavailable.");
-                        //return;
-                }
-                //ascertainCorrectLocationSettings();
-            }
-        });
-    }
-
-    @SuppressWarnings("MissingPermission")
-    // Location access permissions have already been confirmed in ascertainCorrectLocationSettings()
-    void getLocation() {
-
-        FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(this);
-        locationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    Log.d("###", location.toString());
-                    createAndUploadComment(location.getLatitude(), location.getLongitude());
-                }
-                else {
-                    Log.d("###", "Location is null");
-                }
-            }
-        });
+    @Override
+    public void receiveLocation(Location location) {
+        if (location != null) {
+            createAndUploadComment(location.getLatitude(), location.getLongitude());
+        }
+        else {
+            Log.d("###", "PostActivity received a null location for new comment.");
+        }
     }
 
     void createAndUploadComment(double latitude, double longitude) {
@@ -328,5 +266,4 @@ public class PostActivity extends Activity {
 
         postReference.addChildEventListener(listener);
     }
-
 }
