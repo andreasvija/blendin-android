@@ -100,12 +100,17 @@ public class PostActivity extends Activity implements LocationReceiver {
             Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
             try {
                 List<Address> list = geoCoder.getFromLocation(post.getLatitude(), post.getLongitude(), 1);
+
                 if (list != null && list.size() > 0) {
                     String location = list.get(0).getLocality();
                     ((TextView) findViewById(R.id.location)).setText(location);
                 }
+                else {
+                    ((TextView) findViewById(R.id.location)).setText("Not available");
+                }
             } catch (IOException e) {
                 e.printStackTrace();
+                ((TextView) findViewById(R.id.location)).setText("Not available");
             }
 
             // Set up the RecyclerView of the posts

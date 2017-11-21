@@ -124,14 +124,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Geocoder geoCoder = new Geocoder(holder.context, Locale.getDefault());
         try {
             List<Address> list = geoCoder.getFromLocation(post.getLatitude(), post.getLongitude(), 1);
+
             if (list != null) {
                 if (list.size() > 0) {
                     String location = list.get(0).getLocality();
                     holder.locationView.setText(location);
                 }
             }
+            else {
+                holder.locationView.setText("Not available");
+            }
         } catch (IOException e) {
             e.printStackTrace();
+            holder.locationView.setText("Not available");
         }
 
         // Make clicking on post open PostView for that post

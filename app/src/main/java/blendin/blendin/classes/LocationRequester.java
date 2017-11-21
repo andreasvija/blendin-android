@@ -78,7 +78,8 @@ public class LocationRequester {
                             resolvable.startResolutionForResult(contextActivity, 100);
 
                         } catch (IntentSender.SendIntentException sendEx) {
-                            Log.d("###", sendEx.getMessage());
+                            Log.d("###", "Failed to show dialog");
+                            sendEx.printStackTrace();
                         }
                         break;
 

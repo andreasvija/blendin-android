@@ -35,6 +35,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -196,7 +197,7 @@ public class LoginActivity extends Activity {
         String query = "/" + id + "?fields=location,hometown,locale";
 
         GraphRequest.Callback callback = new GraphRequest.Callback() {
-
+            @Override
             public void onCompleted(GraphResponse response) {
 
                 JSONObject json = response.getJSONObject();
@@ -217,8 +218,8 @@ public class LoginActivity extends Activity {
                     }
                     userReference.child("location").setValue(userLocation);
 
-                } catch (Exception e) {
-                    Log.d("###", e.toString());
+                } catch (JSONException e) {
+                    // It is okay for location and hometown to not be found
                     e.printStackTrace();
                 }
                 enterApp();
