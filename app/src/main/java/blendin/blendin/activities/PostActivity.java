@@ -55,6 +55,7 @@ public class PostActivity extends Activity implements LocationReceiver {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
+        // Get data for the post the activity is supposed to show
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             post = (Post) extras.get("post");
@@ -62,6 +63,7 @@ public class PostActivity extends Activity implements LocationReceiver {
             database = FirebaseDatabase.getInstance();
             DatabaseReference authorReference = database.getReference("users").child(post.getAuthorID());
 
+            // Fetch required data about the author
             ChildEventListener userListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -94,6 +96,7 @@ public class PostActivity extends Activity implements LocationReceiver {
                     System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
             ((TextView) findViewById(R.id.timestamp)).setText(ago);
 
+            // Try to put the location data into words
             Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
             try {
                 List<Address> list = geoCoder.getFromLocation(post.getLatitude(), post.getLongitude(), 1);
@@ -117,6 +120,7 @@ public class PostActivity extends Activity implements LocationReceiver {
 
             postCommentsReference = database.getReference("comments").child(post.getId());
 
+            // Add every comment to the ArrayList
             ChildEventListener commentsListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -132,6 +136,7 @@ public class PostActivity extends Activity implements LocationReceiver {
             };
             postCommentsReference.addChildEventListener(commentsListener);
 
+            // Clicking on the author's name sends user to their profile
             findViewById(R.id.author_name).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -141,6 +146,7 @@ public class PostActivity extends Activity implements LocationReceiver {
                 }
             });
 
+            // Initialize the custom listener on the translate button
             ((TranslateButton) findViewById(R.id.translate_button)).startListening(this, titleView, contentView);
         }
 

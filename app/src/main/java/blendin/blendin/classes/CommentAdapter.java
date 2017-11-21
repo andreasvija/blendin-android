@@ -39,6 +39,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         this.comments = comments;
     }
 
+    // Holds all necessary views
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         View view;
@@ -51,7 +52,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         final Context context;
 
-        // Holds all necessary views
         ViewHolder(View view) {
             super(view);
 
@@ -89,6 +89,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference authorReference = database.getReference("users").child(comment.getAuthorID());
 
+        // Fetch required data about the author
         ChildEventListener userListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -113,10 +114,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         authorReference.addChildEventListener(userListener);
 
         holder.contentView.setText(comment.getContent());
+
         CharSequence ago = DateUtils.getRelativeTimeSpanString(comment.getTimestamp(),
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
         holder.timeAgoView.setText(ago);
 
+        // Try to put the location data into words
         Geocoder geoCoder = new Geocoder(holder.context, Locale.getDefault());
         try {
             List<Address> list = geoCoder.getFromLocation(comment.getLatitude(), comment.getLongitude(), 1);
@@ -130,6 +133,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             e.printStackTrace();
         }
 
+        // Make user's profile accessible through their name
         holder.nameView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,6 +143,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             }
         });
 
+        // Initialize the custom listener on the translate button.
+        // null is passed as the value of titleView, as comments do not have titles.
+        // This is taken into account in startListening().
         ((TranslateButton) holder.translateButton).startListening(holder.context, null, holder.contentView);
     }
 

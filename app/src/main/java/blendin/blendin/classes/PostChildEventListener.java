@@ -1,3 +1,7 @@
+/*
+* Firebase ChildEventListener to lessen repetition in CategoriesActivity.setChildEventListener()
+*/
+
 package blendin.blendin.classes;
 
 import com.google.firebase.database.ChildEventListener;

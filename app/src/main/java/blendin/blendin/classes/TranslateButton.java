@@ -1,3 +1,7 @@
+/*
+* Custom ImageView with built-in translation request functionality
+*/
+
 package blendin.blendin.classes;
 
 import android.app.Activity;
@@ -22,6 +26,8 @@ import blendin.blendin.R;
 
 public class TranslateButton extends ImageView {
 
+    // Following constructors required for inflating this view
+
     public TranslateButton(Context context) {
         super(context);
     }
@@ -38,17 +44,18 @@ public class TranslateButton extends ImageView {
         super(context, attrs, defStyleAttr, defStyleRes);
     }*/
 
+    // Set up translation requests
     public void startListening(final Context context, final TextView titleView, final TextView contentView) {
 
         this.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+                // Ask for the language to translate to
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.MyDialogTheme);
                 // The Android Dialog is missing theme resources if the app theme is not an Appcompat one
 
                 builder.setTitle("Choose language to translate into")
-
                         .setPositiveButton("Translate",
                                 new OnLanguageSelectListener(context, titleView, contentView))
 
@@ -63,9 +70,7 @@ public class TranslateButton extends ImageView {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        //String[] codes = getResources().getStringArray(R.array.language_codes_array);
-                                        //languageCode = codes[which];
-                                        //Log.d("###", "Chosen: " + codes[which]);
+
                                     }
                                 });
 
@@ -75,6 +80,7 @@ public class TranslateButton extends ImageView {
         });
     }
 
+    // Listener activated when user has selected the language to translate into in the dialog
     private class OnLanguageSelectListener implements DialogInterface.OnClickListener {
 
         Context context;
@@ -88,8 +94,9 @@ public class TranslateButton extends ImageView {
         }
 
         public void onClick(DialogInterface dialog, int id) {
-            //final TextView titleView = (TextView) ((ViewGroup) v.getParent().getParent().getParent()).getChildAt(1);
-            //final TextView contentView = (TextView) ((ViewGroup) v.getParent().getParent().getParent().getParent().getParent()).getChildAt(1);
+
+            // Get target language code and start the Runnable of the request
+
             ListView listView = ((AlertDialog)dialog).getListView();
             int position = listView.getCheckedItemPosition();
             String languageName = (String) listView.getAdapter().getItem(position);
@@ -105,6 +112,7 @@ public class TranslateButton extends ImageView {
 
     }
 
+    // Custom Runnable to request translation and act on it
     private class TranslationRunnable implements Runnable {
 
         Context context;
@@ -121,21 +129,28 @@ public class TranslateButton extends ImageView {
 
         @Override
         public void run() {
-            Translate translate = TranslateOptions.newBuilder().setApiKey(context.getResources().getString(R.string.google_api_key)).build().getService();
+            Translate translate = TranslateOptions.newBuilder().setApiKey(context.getResources()
+                    .getString(R.string.google_api_key)).build().getService();
             Translate.TranslateOption target = Translate.TranslateOption.targetLanguage(languageCode);
 
             final Translation titleTranslation;
+
+            // If the translation was requested for a post, the titleView will have a non-null value
             if (titleView != null) {
                 titleTranslation = translate.translate(titleView.getText().toString(), target);
             }
             else {
                 titleTranslation = null;
             }
+
             final Translation contentTranslation = translate.translate(contentView.getText().toString(), target);
 
+            // Update the texts of given view(s) on the UI thread according to translation results
+            // TODO: take into account whether given text has already been translated
             ((Activity) context).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    // If there is a title to be translated
                     if (titleTranslation != null) {
                         titleView.setText(titleView.getText() + "\n-----\n" + titleTranslation.getTranslatedText());
                     }

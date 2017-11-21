@@ -75,13 +75,13 @@ public class CategoriesActivity extends Activity {
         postsReference = database.getReference("posts");
         activeListeners = new ArrayList<>();
         usedReferences = new ArrayList<>();
+
         // "All" is the default category
         activeCategory = R.id.category_all;
         switchActiveCategory(activeCategory);
 
-        // TODO: download supported languages in user picked language
-
         //script for downloading language names
+        // TODO: download supported languages in user picked language
         /*Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -112,9 +112,7 @@ public class CategoriesActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         if (id == R.id.action_add) {
@@ -124,6 +122,9 @@ public class CategoriesActivity extends Activity {
         }
 
         if (id == R.id.action_profile) {
+
+            // The user can log out from the profile screen.
+            // If this happens, this activity needs to be closed so the user ends up in LoginActivity
 
             BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
                 @Override
@@ -143,7 +144,7 @@ public class CategoriesActivity extends Activity {
             return true;
         }
 
-        // TODO: settings
+        // TODO: settings activity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             //startActivity(new Intent(this, SettingsActivity.class));
@@ -155,6 +156,7 @@ public class CategoriesActivity extends Activity {
 
     // Changes highlighted category and the data used in RecyclerView
     void switchActiveCategory(int newActive) {
+
         // Set the old active category's background to normal
         LinearLayout ll = (LinearLayout) findViewById(activeCategory);
         ll.setBackground(getResources().getDrawable(R.drawable.back_inactive));
@@ -174,6 +176,7 @@ public class CategoriesActivity extends Activity {
         recyclerView.setAdapter(postAdapter);
     }
 
+    // Sets ChildEventListener(s) for all categories/chosen category
     public void setChildEventListener(String category) {
 
         for (int i = 0; i < usedReferences.size(); i++) {

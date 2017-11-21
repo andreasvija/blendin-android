@@ -58,12 +58,14 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // If user is already logged in
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
             enterApp();
         }
         else {
+            // Set up login button for logging in
             LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
             loginButton.setReadPermissions("public_profile", "user_location");
             //id, name, profile pic; location; backup location; app language
@@ -91,9 +93,12 @@ public class LoginActivity extends Activity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
+    // Connect Facebook login with Firebase auth system
     void connectLoginToFirebase(AccessToken token) {
+
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         Task<AuthResult> task = firebaseAuth.signInWithCredential(credential);
+
         OnCompleteListener listener = new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -103,9 +108,11 @@ public class LoginActivity extends Activity {
                 }
             }
         };
+
         task.addOnCompleteListener(this, listener);
     }
 
+    // Check if there is already data for user's languages
     void checkForPreviousData() {
         Profile profile = Profile.getCurrentProfile();
         String id = profile.getId();
@@ -125,12 +132,15 @@ public class LoginActivity extends Activity {
                 }
             }
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         };
 
         userReference.addListenerForSingleValueEvent(valueEventListener);
     }
 
+    // Ask for the languages the user knows
     void askForLanguages() {
         final ArrayList<String> knownLanguages = new ArrayList<>();
         final ArrayList<String> allLanguages = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.language_names_array)));
@@ -168,10 +178,12 @@ public class LoginActivity extends Activity {
     }
 
     void updateUserData(ArrayList<String> languages) {
+
         Profile profile = Profile.getCurrentProfile();
         String id = profile.getId();
         String name = profile.getName();
         String photoURL = profile.getProfilePictureUri(200,200).toString();
+        // If location can not be found, this is shown instead
         String userLocation = "Not available";
 
         User user = new User(id, name, photoURL, userLocation, languages);
@@ -184,7 +196,9 @@ public class LoginActivity extends Activity {
         String query = "/" + id + "?fields=location,hometown,locale";
 
         GraphRequest.Callback callback = new GraphRequest.Callback() {
+
             public void onCompleted(GraphResponse response) {
+
                 JSONObject json = response.getJSONObject();
                 try {
                     location = json.getJSONObject("location").getString("name");

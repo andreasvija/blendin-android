@@ -33,6 +33,7 @@ public class ProfileActivity extends Activity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference authorReference = database.getReference("users").child(userID);
 
+        // Get all of the user's data
         ChildEventListener userListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -71,6 +72,8 @@ public class ProfileActivity extends Activity {
 
         authorReference.addChildEventListener(userListener);
 
+        // If user is viewing their own profile, hide message button and activate logout button,
+        // otherwise hide logout button
         if (userID.equals(Profile.getCurrentProfile().getId())) {
 
             findViewById(R.id.messenger_button).setVisibility(View.INVISIBLE);

@@ -89,6 +89,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference authorReference = database.getReference("users").child(post.getAuthorID());
 
+        // Fetch the required data about the author
         ChildEventListener userListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -113,11 +114,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         authorReference.addChildEventListener(userListener);
 
         holder.titleView.setText(post.getTitle());
+
         holder.answersView.setText(String.valueOf(post.getCommentCount()) + " " + "answers");
         CharSequence ago = DateUtils.getRelativeTimeSpanString(post.getTimestamp(),
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
         holder.timeAgoView.setText(ago);
-        
+
+        // Try to put the location data into words
         Geocoder geoCoder = new Geocoder(holder.context, Locale.getDefault());
         try {
             List<Address> list = geoCoder.getFromLocation(post.getLatitude(), post.getLongitude(), 1);
@@ -131,6 +134,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             e.printStackTrace();
         }
 
+        // Make clicking on post open PostView for that post
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
