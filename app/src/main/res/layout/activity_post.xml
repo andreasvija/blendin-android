@@ -89,7 +89,7 @@
                                 android:textColor="#3c3744"
                                 android:textSize="10sp" />
 
-                            <ImageView
+                            <blendin.blendin.classes.TranslateButton
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:id="@+id/translate_button"

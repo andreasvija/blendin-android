@@ -5,28 +5,21 @@
 package blendin.blendin.activities;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.facebook.Profile;
-import com.google.cloud.translate.Translate;
-import com.google.cloud.translate.TranslateOptions;
-import com.google.cloud.translate.Translation;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,7 +28,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -46,6 +38,7 @@ import blendin.blendin.classes.LocationReceiver;
 import blendin.blendin.classes.LocationRequester;
 import blendin.blendin.classes.Post;
 import blendin.blendin.classes.CommentAdapter;
+import blendin.blendin.classes.TranslateButton;
 
 public class PostActivity extends Activity implements LocationReceiver {
 
@@ -92,8 +85,10 @@ public class PostActivity extends Activity implements LocationReceiver {
 
             authorReference.addChildEventListener(userListener);
 
-            ((TextView) findViewById(R.id.title)).setText(post.getTitle());
-            ((TextView) findViewById(R.id.content)).setText(post.getContent());
+            TextView titleView = ((TextView) findViewById(R.id.title));
+            titleView.setText(post.getTitle());
+            TextView contentView = ((TextView) findViewById(R.id.content));
+            contentView.setText(post.getContent());
 
             CharSequence ago = DateUtils.getRelativeTimeSpanString(post.getTimestamp(),
                     System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
@@ -146,64 +141,7 @@ public class PostActivity extends Activity implements LocationReceiver {
                 }
             });
 
-            findViewById(R.id.translate_button).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this, R.style.MyDialogTheme);
-                    // The Android Dialog is missing theme resources if the app theme is not an Appcompat one
-                    builder.setTitle("Choose language to translate into")
-                            .setPositiveButton("Translate",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            final TextView titleView = (TextView) ((ViewGroup) v.getParent().getParent().getParent()).getChildAt(1);
-                                            final TextView contentView = (TextView) ((ViewGroup) v.getParent().getParent().getParent().getParent().getParent()).getChildAt(1);
-                                            ListView listView = ((AlertDialog)dialog).getListView();
-                                            int position = listView.getCheckedItemPosition();
-                                            String languageName = (String) listView.getAdapter().getItem(position);
-                                            ArrayList<String> names = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.language_names_array)));
-                                            ArrayList<String> codes = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.language_codes_array)));
-                                            final String languageCode = codes.get(names.indexOf(languageName));
-
-                                            Thread thread = new Thread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    Translate translate = TranslateOptions.newBuilder().setApiKey(getResources().getString(R.string.google_api_key)).build().getService();
-                                                    Translate.TranslateOption target = Translate.TranslateOption.targetLanguage(languageCode);
-                                                    final Translation titleTranslation = translate.translate(titleView.getText().toString(), target);
-                                                    final Translation contentTranslation = translate.translate(contentView.getText().toString(), target);
-                                                    runOnUiThread(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            titleView.setText(titleView.getText() + "\n-----\n" + titleTranslation.getTranslatedText());
-                                                            contentView.setText(contentView.getText() + "\n-----\n" + contentTranslation.getTranslatedText());
-                                                        }
-                                                    });
-                                                }
-                                            });
-                                            thread.start();
-                                        }
-                            })
-                            .setNegativeButton("cancel",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-
-                                        }
-                            })
-                            .setSingleChoiceItems(R.array.language_names_array,
-                                    0,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            String[] codes = getResources().getStringArray(R.array.language_codes_array);
-                                            //languageCode = codes[which];
-                                            Log.d("###", "Chosen: " + codes[which]);
-                                        }
-                            });
-
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
-            });
+            ((TranslateButton) findViewById(R.id.translate_button)).startListening(this, titleView, contentView);
         }
 
         final LocationReceiver thisReference = this;
