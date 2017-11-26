@@ -210,7 +210,7 @@ public class PostActivity extends Activity implements LocationReceiver {
             @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
             @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
             @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-            @Override public void onCancelled(DatabaseError databaseError) {Log.d("###", "onCancelled");}
+            @Override public void onCancelled(DatabaseError databaseError) {}
         };
 
         postReference.addChildEventListener(listener);

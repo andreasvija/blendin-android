@@ -128,7 +128,6 @@ public class LoginActivity extends Activity {
                     askForLanguages();
                 }
                 else {
-                    Log.d("###", dataSnapshot.getValue().toString());
                     enterApp();
                 }
             }

@@ -14,7 +14,9 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
@@ -44,6 +46,7 @@ public class LocationRequester {
                 // location requests here.
                 Log.d("###", "Location settings are correct");
                 FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(contextActivity);
+                // get last recorded location
                 locationClient.getLastLocation().addOnSuccessListener(contextActivity, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
@@ -52,8 +55,31 @@ public class LocationRequester {
                             Log.d("###", "Location is " + location.toString());
                             receiver.receiveLocation(location);
                         }
-                        else {
-                            Log.d("###", "Location is null");
+                        else { // no previous location is stored (or something else went wrong)
+                            Log.d("###", "No previous location is stored or something else happened.");
+
+                            // request for a new location
+
+                            LocationRequest locationRequest = new LocationRequest();
+                            final FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(contextActivity);
+
+                            final LocationCallback locationCallback = new LocationCallback() {
+                                @Override
+                                public void onLocationResult(LocationResult locationResult) {
+                                    for (Location location : locationResult.getLocations()) {
+                                        if (location != null) {
+                                            client.removeLocationUpdates(this);
+                                            Log.d("###", "Requested location and received: " + location.toString());
+                                            receiver.receiveLocation(location);
+                                        }
+                                        else {
+                                            Log.d("###", "Requested location which turned out to be null");
+                                        }
+                                    }
+                                }
+                            };
+
+                            client.requestLocationUpdates(locationRequest, locationCallback, null);
                         }
                     }
                 });
@@ -64,7 +90,6 @@ public class LocationRequester {
             @Override
             public void onFailure(@NonNull Exception e) {
 
-                Log.d("###", "onFailure");
                 int statusCode = ((ApiException) e).getStatusCode();
 
                 switch (statusCode) {
@@ -85,8 +110,6 @@ public class LocationRequester {
 
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                         // Location settings are not satisfied, and this can not be fixed
-                        Log.d("###", "Location settings are not satisfied. Settings change unavailable.");
-                        //return;
                 }
             }
         });
