@@ -1,0 +1,87 @@
+{
+  "comments" : {
+    "KDlkdfnskdfnj" : {
+      "KMahsajhsajha" : {
+        "authorID" : "5",
+        "content" : "uno uno",
+        "id" : "KMahsajhsajha",
+        "latitude" : 56.949,
+        "longitude" : 24.106,
+        "timestamp" : 1501794232000
+      }
+    },
+    "KDsajasjaskj" : {
+      "-Kru_wSVeAY4tb1xVURy" : {
+        "authorID" : "123",
+        "content" : "hello",
+        "id" : "-Kru_wSVeAY4tb1xVURy",
+        "latitude" : 56.949,
+        "longitude" : 24.106,
+        "timestamp" : 1503147836710
+      },
+      "KMjdtsghsasa" : {
+        "authorID" : "3",
+        "content" : "one one",
+        "id" : "KMjdtsghsasa",
+        "latitude" : 56.949,
+        "longitude" : 24.106,
+        "timestamp" : 1501794232000
+      },
+      "KMkdtsfsbsgt" : {
+        "authorID" : "3",
+        "content" : "one two",
+        "id" : "KMkdtsfsbsgt",
+        "latitude" : 56.949,
+        "longitude" : 24.106,
+        "timestamp" : 1501794232000
+      }
+    }
+  },
+  "posts" : {
+    "Finance" : {
+      "KDsajasjaskj" : {
+        "authorID" : "3",
+        "category" : "Finance",
+        "commentCount" : 3,
+        "content" : "Something something lorem ipsum",
+        "id" : "KDsajasjaskj",
+        "latitude" : 56.949,
+        "longitude" : 24.106,
+        "timestamp" : 1501794232000,
+        "title" : "Help with bank transfer"
+      }
+    },
+    "Food" : {
+      "KDlkdfnskdfnj" : {
+        "authorID" : "5",
+        "category" : "Food",
+        "commentCount" : 1,
+        "content" : "Something something lorem ipsum",
+        "id" : "KDlkdfnskdfnj",
+        "latitude" : 56.949,
+        "longitude" : 24.106,
+        "timestamp" : 1501794232000,
+        "title" : "Need spices for tacos!!"
+      }
+    }
+  },
+  "users" : {
+    "3" : {
+      "id" : "3",
+      "name" : "Person One",
+      "photoURL" : "https://scrambledeggsdotorg.files.wordpress.com/2012/04/one.png"
+    },
+    "5" : {
+      "id" : "5",
+      "name" : "Persones Dos",
+      "photoURL" : "https://cdn.heavencostumes.com.au/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/s/m/smf-29233-tequila-shooter-guy-men_s-mexican-poncho-costume-front-close-r.jpg"
+    },
+    "1987657441259733" : {
+      "id" : "1987657441259733",
+      "languages" : [ "English", "Estonian" ],
+      "location" : "Tartu, Estonia",
+      "name" : "Andreas Vija",
+      "photoURL" : "https://graph.facebook.com/1987657441259733/picture?height=200&width=200&migration_overrides=%7Boctober_2012%3Atrue%7D"
+    }
+  }
+}
