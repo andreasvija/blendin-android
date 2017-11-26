@@ -37,7 +37,7 @@ public class Post implements Serializable {
         this.commentCount = 0;
     }
 
-    // Getter methods required for importing Firebase database data into custom class objects
+    // Public getter methods required for importing Firebase database data into custom class objects
 
     public String getId() {
         return id;
@@ -63,7 +63,8 @@ public class Post implements Serializable {
     public double getLongitude() {
         return longitude;
     }
-    int getCommentCount() {
+    @SuppressWarnings("WeakerAccess")
+    public int getCommentCount() {
         return commentCount;
     }
 

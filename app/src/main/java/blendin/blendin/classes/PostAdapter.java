@@ -115,7 +115,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         holder.titleView.setText(post.getTitle());
 
-        holder.answersView.setText(String.valueOf(post.getCommentCount()) + " " + "answers");
+        holder.answersView.setText(String.valueOf(post.getCommentCount()) + " answers");
         CharSequence ago = DateUtils.getRelativeTimeSpanString(post.getTimestamp(),
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
         holder.timeAgoView.setText(ago);
